@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <title></title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-header">新增分期方式 &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe666;</i></div>
+                <form class="layui-form layui-card-body" action="" id="payform">
+                  <div class="layui-form-item">
+                      <label class="layui-form-label">名称</label>
+                      <div class="layui-input-block">
+                        <select name="fid" lay-filter="fenlei" id="fid">
+                          <option value="">请选择首付款额度</option>
+                          {foreach name="cates" item="vo"}
+                              <option value="{$vo.fid}">{$vo.fname}</option>
+                          {/foreach}
+                        </select>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">期数</label>
+                    <div class="layui-input-inline">
+                      <input type="text" lay-verify="required" name="tname" placeholder="请输入分期期数" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">利率</label>
+                    <div class="layui-input-inline">
+                      <input type="text" lay-verify="required" name="int" 
+                       placeholder="请输入分期利率" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">是否显示</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" name="switch" lay-skin="switch" lay-text="显示|隐藏" value='1' lay-verify="required">
+                    </div>
+                  </div>
+
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn layui-btn-blue" type="submit">立即提交</button>
+                      <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+                    </div>
+                  </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/js/layerwin.js"></script>
+<!-- 表单验证js文件start -->
+    {include file="public/validate"}
+<!-- 表单验证js文件end
+ -->
+  
+    <script>
+      layui.use('layer',function(){
+        var layer = layui.layer;
+        layer.config({
+          icon:2,
+          tips:[2,"#123456"],
+          time:1000
+        })
+        $("#payform").validate({
+          submitHandler:function(form){
+            var tnameval = $("input[name=tname]").val();
+            var checktname = 0;
+            if(tnameval==''){
+              layer.tips('分期期数不能为空','input[name=tname]');
+              return false;
+            }
+            $.ajax({
+              type:'get',
+              url:'{:url("admin/fenqi/payadd",["type"=>"checktname"])}',
+              data:'tname='+tnameval,
+              dataType:"json",
+              async:false,
+              success:function(res){
+                if(res.code==0){
+                  layer.tips(res.msg,'input[name=tname]');
+                  checktname = 1;
+                }
+              }
+            });
+            if(checktname==1){
+              return false;
+            }
+            $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('admin/fenqi/payadd')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code==1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+                }else{
+                  layer.msg(res.msg,{icon:2,time:1500});
+                }
+              }
+            })
+          
+          }
+        })
+      })
+    </script>
+</body>
+</html>

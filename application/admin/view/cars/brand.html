@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+    <style type="text/css">
+       /*.laytable-cell-1-news_pic{height: 60px;line-height: 60px}*/
+       .layui-table-cell {height: inherit;}
+      .laytable-cell-1-10{height: 60px;line-height: 60px} 
+      .laytable-cell-1-news_id{height: 60px;line-height:60px} 
+    </style>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">新闻</a>
+                  <a><cite>新闻管理</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增</button>
+                        &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe669;</i> 
+                        <div class="demoTable">
+                            搜索ID：
+                            <div class="layui-inline">
+                            <input class="layui-input" name="search" id="demoReload" autocomplete="off">
+                            </div>
+                            <button class="layui-btn" data-type="reload">搜索</button>
+                        </div>
+                      <table lay-filter="catelist" lay-data="{height:'450','width':1200,'page':true,'limit':8,'limits':[8,15,20],id:'testReload'}">
+                        {literal}
+                        <thead >
+                          <tr> 
+                            <th lay-data="{field:'bnd_id',width:60,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'bnd_img',width:160,align:'center',templet:'#img',}">图片</th>
+                            <th lay-data="{field:'bnd_name','sort':true,width:200,align:'center'}">名称</th>
+                            <th lay-data="{field:'bnd_ifcommand',width:120,templet:'#ifcommand',align:'center'}">是否推荐</th>
+                            <th lay-data="{field:'bnd_ifshow',width:120,align:'center',templet:'#ifshow'}">显示状态</th>
+                            <th lay-data="{width:160,toolbar:'#toolbar',align:'center',fixed:'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach name='data' item="vo"}
+                            <tr >
+                                <td align='center'>{$vo.bnd_id}</td>
+                                <td align='center' lay-data="{height:80}">{$vo.bnd_img}</td>
+                                <td align='center'>{$vo.bnd_name}</td>
+                                <td align='center'>{$vo.bnd_ifcommand}</td>
+                                <td align='center'>
+                                  {$vo.bnd_ifshow}
+                                </td>
+                                <td align='center'></td>
+                            </tr>
+                          {/foreach}
+                        </tbody>
+                      </table>
+                        <tfoot>
+                              <div class="page">
+                                
+                              </div>
+                        </tfoot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script><script src="/static/admin/js/jquery.form.js"></script>
+    <script type='text/html' id="ifcommand">
+      <input type="checkbox" name="ifcommand" lay-skin="switch" lay-text="推荐|撤回"  lay-event='switch' {{ d.bnd_ifcommand==1?'checked':''}} lay-filter='ifshow' dataid="{{ d.bnd_id }}">
+    </script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏"  lay-event='switch' {{ d.bnd_ifshow==1?'checked':''}} lay-filter='ifshow' dataid="{{ d.bnd_id }}">
+    </script>
+    <script type='text/html' id="img">
+      <img src="{{ d.bnd_img }}" alt="" width="80px" height="60px">
+    </script>
+    
+    <script type="text/html" id="toolbar">
+      <a lay-event="edit" class="layui-btn layui-btn-xs layui-btn-warm">编辑</a>
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+  var element = layui.element;
+  var form = layui.form;
+  var table = layui.table;
+  layui.use('table', function(){
+  
+    var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+      //执行重载
+      table.reload('testReload', {
+        url:"{:url('admin/Cars/test')}",
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+            id: demoReload.val()
+        }
+      });
+    }
+  };
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+  table.init('catelist',{
+    // width:1200,
+  });
+  
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var bndid = obj.data.bnd_id;
+    if(evt=="del"){
+      layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+        $.ajax({
+          type:'get',
+          url:'{:url("admin/Cars/brandDel")}',
+          data:"bndid="+bndid,
+          dataType:"json",
+          success:function(res){
+            if(res.code==0){
+              layer.msg(res.msg,{icon:2,time:1500});
+            }else{
+              layer.msg(res.msg,{icon:1,time:1500},function(){
+                obj.del();
+                location.reload();
+              })
+            }
+          }
+        })
+      })
+    }else if(evt=="edit"){
+      // 执行编辑操作
+      layer.open({
+      fix: false, //不固定
+      maxmin: true,
+      shade:0.4,
+      type: 2, 
+      area:['850px','450px'],
+      title:"品牌修改",
+      content: '{:url("admin/Cars/brandUpdate")}?bndid='+bndid, 
+      })
+    }
+  })
+  form.on('switch(ifcommand)',function(obj){
+      var bndid = obj.elem.getAttribute('dataid');
+      $.ajax({
+        type:"get",
+        url:"{:url('admin/Cars/bndupdateifcomand')}",
+        data:"bndid="+bndid,
+        dataType:'json',
+        success:function(res){
+          if(res.code==1){
+            layer.msg(res.msg,{icon:1,time:1000})
+          }
+        }
+      })
+    })
+  form.on('switch(ifshow)',function(obj){
+      var bndid = obj.elem.getAttribute('dataid');
+      $.ajax({
+        type:"get",
+        url:"{:url('admin/Cars/bndupdateifshow')}",
+        data:"bndid="+bndid,
+        dataType:'json',
+        success:function(res){
+          if(res.code==1){
+            layer.msg(res.msg,{icon:1,time:1000})
+          }
+        }
+      })
+    })
+
+  $(".add").click(function(){
+    layer.open({
+    fix: false, //不固定
+    maxmin: true,
+    shade:0.4,
+    type: 2, 
+    area:['900px','450px'],
+    title:"新增品牌",
+    content: "{:url('admin/Cars/brandAdd')}", 
+    })   
+  })
+ 
+    </script>
+</body>
+</html>

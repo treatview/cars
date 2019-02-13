@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>会员中心</title>
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+	<link rel="stylesheet" type="text/css" id="css" href="/static/home/css/user.css">
+	<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+	<script type="text/javascript" src="/static/admin/assets/layui.all.js"></script>
+	<style type="text/css"> 
+	</style>
+</head>
+<body>
+<div id="lay-body">
+	<div class="layui-layout layui-layout-admin">
+<div class="layui-header">
+	<ul class="layui-nav layui-layout-left">
+		<li class="layui-nav-item layadmin-flexible" lay-unselect="">
+			<a href="javascript:;" id="flexible" title="侧边伸缩">
+			<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+			<a href="/" target="_blank" title="前台">
+			<i class="layui-icon layui-icon-website"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item" lay-unselect="">
+			<a href="javascript:;" id="refresh" title="刷新">
+			<i class="layui-icon layui-icon-refresh-3"></i>
+			</a>
+		</li>
+		<span class="layui-nav-bar" style="width: 0px; left: 142px; opacity: 0; top: 48px;"></span>
+	</ul>
+	<ul class="layui-nav layui-layout-right">
+	  <li class="layui-nav-item" style="margin-right:10px;">
+		<a href="javascript:;">
+		   <i class="layui-icon" style="font-size:16px; color: #aaa;">&#xe612;</i>
+           15261011679
+		</a>
+		<dl class="layui-nav-child">
+		  <dd><a href="user.php?m=userinfo&a=logout" class="logout">退出</a></dd>
+		</dl>
+	  </li>
+	</ul>
+</div>		<div class="layui-side layui-side-menu">
+	<div class="layui-side-scroll">
+		<div class="layui-logo">
+            会员中心
+        </div>
+		<ul class="layui-nav layui-nav-tree">
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">首页</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="{:url('home/Member/index')}">会员首页</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是买家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="user.php?m=mysubscribe&a=list">我的预约</a></dd>
+					<dd ><a href="user.php?m=mybargain&a=list">我的砍价</a></dd>
+					<dd ><a href="user.php?m=myloan&a=list">我的贷款</a></dd>
+					<dd ><a href="user.php?m=collect&a=list">我的收藏</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是卖家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="user.php?m=cars&a=list">车源管理</a></dd>
+					<dd ><a href="user.php?m=subscribe&a=list">预约管理</a></dd>
+					<dd ><a href="user.php?m=bargain&a=list">砍价管理</a></dd>
+					<dd ><a href="user.php?m=loan&a=list">贷款管理</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">用户中心</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="user.php?m=userinfo&a=upinfo">基本资料</a></dd>
+				
+					<dd ><a href="user.php?m=userinfo&a=uppwd">修改密码</a></dd>
+				</dl>
+			</li>
+		</ul>
+    </div>
+</div>		
+<div class="layadmin-body-shade"></div>
+		<div class="layui-body">
+	<div class="layui-card">
+		<div class="layui-card-header">
+			<div class="layui-tab layui-tab-brief">
+				个人认证
+			</div> 
+		</div>
+		<div class="layui-card-body">
+			<div class="layui-row layui-col-space10">
+				<div class="layui-col-md4"><div class="stepbox ">1.填写资料</div></div>
+				<div class="layui-col-md4"><div class="stepbox ">2.审核中</div></div>
+				<div class="layui-col-md4"><div class="stepbox stepbox_isselected">3.审核结果</div></div>
+			</div>
+			<hr style="margin:20px 0"/>
+			<form  class="layui-form"  action="" id="carform" >
+			<div>
+				<input type="hidden" name="checkname" value="{:session('front_name')}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">失败原因</label>
+					<div class="layui-input-block">
+						<input type="text" lay-verify="required" class="layui-input" name="user" value="{$data.auth_reason}"/>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label"></label>
+					<div class="layui-input-inline">
+						<button type="button" value="" class="layui-btn layui-btn-normal"  ><a href="{:url('home/Authenti/authenti')}">重新提交内容</a><button>
+						
+					</div>
+				</div>
+			</div>
+	</form>
+</body>
+
+{include file="public/validate"}
+
+<script type="text/javascript">
+				//上传图片
+				layui.use('upload', function(){
+					var upload = layui.upload;
+					//执行实例
+					var uploadInst = upload.render({
+						elem: '#idcard_front' //绑定元素
+						,url: '{:url("home/authenti/upload")}' //上传接口
+						,field:"img"
+						,done: function(res){
+							if(res.code==1){
+								$("input[name=idcard_front]").val(res.pathinfo);
+								$("#limg").html("<img src='"+"/uploads/"+res.pathinfo+"'/><span class='del'><i class='layui-icon'>&#x1007;</i></span>");
+								layer.msg("上传成功");
+							}
+
+							else{
+								layer.msg(res.msg);
+							}
+						}
+						,errder: function(){
+							layer.msg("上传失败");
+						}
+					});
+				});
+
+				//上传图片
+				layui.use('upload', function(){
+					var upload = layui.upload;
+					//执行实例
+					var uploadInst = upload.render({
+						elem: '#idcard_back' //绑定元素
+						,url: '{:url("home/authenti/upload")}' //上传接口
+						,field:'img'
+						,done: function(res){
+							if(res.code==1){
+								$("input[name=idcard_back]").val(res.pathinfo);
+							
+								$("#limg2").html("<img src='"+"/uploads/"+res.pathinfo+"'/><span class='del'><i class='layui-icon'>&#x1007;</i></span>");
+
+								layer.msg("上传成功");
+							}
+							else{
+								layer.msg(res.msg);
+							}
+						}
+						,errder: function(){
+							layer.msg("上传失败");
+						}
+					});
+				});
+				
+				//表单提交
+
+					//删除图片
+	$(".del").live("click",function(){
+      //页面中，该图片消失
+      var imginfo = $(this).prev().attr('src');
+      var obj = $(this).parent();
+      //服务器中，相应的图片删除
+      $.ajax({
+        type:'get',
+        url:"{:url('home/Authenti/delImg')}",
+        data:{imginfo:imginfo},
+        dataType:"json",
+        success:function(res){
+          if(res.code==1){
+            obj.html("");//页面中，该图片消失
+          }
+        }
+      })
+    })
+				
+	//验证 用户名，密码，上传图不为空
+
+    $("#carform").validate({
+      submitHandler:function(form){
+        var limg = $(".front").children("span").length;
+        if(limg == ""){
+          layer.tips("图片不能为空",".front",{time:1500,
+            tips:[2,'#F13D3D']});
+          return false;
+        }
+        var bimg = limg = $(".back").children("span").length;
+        if(bimg == ""){
+          layer.tips("图片不能为空",".back",{time:1500,
+            tips:[2,'#F13D3D']});
+          return false;
+        }
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('home/Authenti/authinfo')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+</script>
+</html>

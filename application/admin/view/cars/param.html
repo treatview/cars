@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+    <style type="text/css">
+       /*.laytable-cell-1-news_pic{height: 60px;line-height: 60px}*/
+       .layui-table-cell {height: inherit;}
+      .laytable-cell-1-10{height: 60px;line-height: 60px} 
+      .laytable-cell-1-news_id{height: 60px;line-height:60px} 
+    </style>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">二手车</a>
+                  <a><cite>亮点设置</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+            
+                      <table lay-filter="catelist" lay-data="{height:'450','width':1200,'page':true,'limit':10,'limits':[10,15,20],id:'testReload'}">
+                        {literal}
+                        <thead >
+                          <tr >
+                            <th lay-data="{field:'param_id',width:80,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'param_name',width:160,'sort':true,align:'center'}">名称</th>
+                            <th lay-data="{field:'param_tag','sort':true,width:280,align:'center'}">标识</th>
+                            <th lay-data="{width:220,toolbar:'#toolbar',align:'center',fixed:'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach name='data' item="vo"}
+                            <tr >
+                                <td align='center'>{$vo.param_id}</td>
+                                <td align='center' >
+                                  {$vo.param_name}
+                                </td>
+                                <td align='center'>{$vo.param_tag}</td>
+                                <td align='center'></td>
+                            </tr>
+                          {/foreach}
+                        </tbody>
+                      </table>
+                        <tfoot>
+                              <div class="page">
+                                
+                              </div>
+                        </tfoot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+  {include file="public/validate"}
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏"  lay-event='switch' {{ d.brt_ifshow==1?'checked':''}}
+       lay-filter='ifshow' dataid="{{ d.brt_id }}">
+    </script>
+
+    <script type="text/html" id="toolbar">
+      <button type='button' class="layui-btn layui-btn-xs layui-btn-warm">查看</button>
+    </script>
+    <script>
+
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    // width:1200,
+  });
+
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var brtid = obj.data.brt_id;
+    if(evt=="edit"){
+      // 执行编辑操作
+      layer.open({
+      fix: false, //不固定
+      maxmin: true,
+      shade:0.4,
+      type: 2, 
+      area:['850px','450px'],
+      title:"亮点修改",
+      content: ''+brtid, 
+      })
+    }
+  })
+ 
+  $(".add").click(function(){
+    layer.open({
+    fix: false, //不固定
+    maxmin: true,
+    shade:0.4,
+    type: 2, 
+    area:['900px','450px'],
+    title:"新增参数",
+    content: "", 
+    })   
+  })
+    </script>
+</body>
+</html>

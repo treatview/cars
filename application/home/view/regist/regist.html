@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+	<meta content="锐车" name="keywords" />
+	<meta content="锐车" name="description" />
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css?t=">
+	<link rel="stylesheet" type="text/css" href="/static/home/css/style.css?t=">
+	
+	<script type="text/javascript" src="/static/admin/assets/layui.all.js"></script>
+	<style type="text/css">
+	.layui-form[wid100] .layui-form-label {
+    width: 120px;
+}
+	</style>
+  </head>
+	<body>
+	<body class="loginbg">
+	<div class="loginhead">
+		<div class="loginheadbox layui-clear">
+			<div class="logo">
+				<a href="/"><img src=""></a>
+			</div>
+			<div class="logintext">
+				已有账号？&nbsp;&nbsp;<a href="{:url('home/Login/login')}" target="_blank" style="color:#f60">立即登录</a>
+			</div>
+		</div>
+	</div>
+	<div class="layui-container">
+		<div class="login_main">
+		<div class="title">注册锐车</div>
+			<div class="mt20">
+				<form name="registerform" id="registerform" wid100 class="layui-form" method="post" action="/index.php?m=register">
+					<div class="layui-form-item">
+						<label class="layui-form-label">用户名</label>
+						<div class="layui-input-inline">
+							<input type="text" name="user" id="user" class="layui-input" placeholder="请输入用户名" lay-verify=""/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">手机号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="mobilephone" id="mobilephone" class="layui-input" placeholder="请输入手机号" lay-verify=""/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">图形验证码</label>
+						<div class="layui-input-inline">
+							<input name="checkcode" id="checkcode" class="layui-input" placeholder="请填写图形验证码" lay-verify="required">
+							<!-- required|checkcode -->
+						</div>
+						<div class="layui-input-inline">
+							<img src="{:url('home/Regist/makeVerify')}" width="100" height="40" id="verify" alt="captcha" />
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">密码</label>
+						<div class="layui-input-inline">
+							<input type="password" name="pwd" id="password" placeholder="请输入密码" class="layui-input" lay-verify=""/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">再次输入密码</label>
+						<div class="layui-input-inline">
+							<input type="password" name="rwd" id="rwd" placeholder="再次输入密码" class="layui-input" lay-verify=""/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">地区</label>
+						<div class="layui-input-inline" id="provbox">
+							<select name="pid" class="layui-input" id="prov" lay-filter="prov" lay-verify="required">
+								<option value=''>请选择省份</option>
+							</select>
+						</div>
+						<div class="layui-input-inline" id="citybox">
+							<select name="cid" class="layui-input" id="city" lay-filter="city" lay-verify="required">
+								<option value=''>请选择</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">&nbsp;</label>
+						<div class="layui-input-inline">
+							<input type="submit" value="立即注册" class="layui-btn layui-btn-fluid layui-btn-danger" lay-submit="">
+							<input type="hidden" name="a" value="register">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">&nbsp;</label>
+						<div class="layui-input-inline" style="width:30px;"><input type="checkbox" name="agree" title="" lay-skin="primary" checked lay-verify="required"></div>
+						<div class="layui-form-mid layui-word-aux">我已经看过并同意 <a href="/about/5" target="_blank">《服务协议》</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="logincopyright">
+		 Copyright  2015 锐车 版权所有. 锐车
+	</div>
+	<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+	{include file="public/validate"}
+	<script type="text/javascript">
+		
+		layui.use(['form','layer'], function(){ 
+			var form = layui.form;
+			var layer = layui.layer;
+			var msg = "";
+			//更换图片验证码
+			$("#verify").click(function(){
+				var num = Math.random();
+				$(this).attr("src","{:url('home/regist/makeVerify')}?="+num);
+			});
+			$("input[name=checkcode]").blur(function(){
+				var val = $(this).val();
+				$.ajax({
+					type:'get',
+					url:"{:url('home/regist/checkVerify')}",
+					data:{'verify':val},
+					dataType:"json",
+					success:function(res){
+						if (res.code==0) {
+							layer.tips(res.msg,"input[name=checkcode]",{time:1000,tips:[2,"#123456"]});
+						}
+					}
+				})
+			})
+			var check = 0;
+			$("input[name=user]").blur(function(){
+				var val = $(this).val();
+				$.ajax({
+					type:'get',
+					url:"{:url('home/Regist/checkname')}",
+					data:{'name':val},
+					dataType:"json",
+					success:function(res){
+						if(res.code==0) {
+							layer.tips(res.msg,"input[name=user]",{time:1000,tips:[2,"#F02525"]});
+							check = 1;
+						}
+					}
+				})
+			})
+			if(check ==1)
+			{
+				return false;
+			}
+			form.on('submit(formDemo)', function(){
+			    
+			});
+			//封装查询函数
+			$.post("{:url('home/regist/select')}","id=1",function(res){
+				var datas = eval("("+res+")");
+				var str = "";
+				for(var data in datas){
+					for (var arr in datas[data]){
+						str+="<option value='"+datas[data][arr].area_id+"'>";
+						str += datas[data][arr].initials;
+						str+= datas[data][arr].area_name;
+						str+="</option>";
+						
+					}	
+				}
+					$('#prov').append(str);
+					//重新渲染
+					form.render();
+			},false);
+			//
+			form.on('select(prov)', function(data){
+			  // console.log(data.value); //得到被选中的值
+			  $.post("{:url('home/regist/select')}","id="+data.value,function(res){
+				var date = eval("("+res+")");
+				var arr = "";
+				for(var data in date){
+					// console.log(date[data]);
+					for (var j in date[data]){
+						arr+="<option value='"+date[data][j].area_id+"'>";
+						
+						arr+=date[data][j].area_name;
+						arr+="</option>";
+					}
+							
+				}
+					$('#city').html(arr);
+					//重新渲染
+					form.render();
+			},false);
+			});
+		});
+		$("#registerform").validate({
+          submitHandler:function(form){
+          	//验证
+          	var name = $("input[name=user]").val();
+            if(!/^[a-zA-Z0-9_-]{4,16}$/.test(name)){
+					layer.tips("用户名不符合要求","input[name=user]",{time:1500,tips:[2,'#F13D3D']});
+					return false;
+			     }
+			var phone = $("input[name=mobilephone]").val();
+			if(!/^1[34578][0-9]{9}$/.test(phone)){
+            	layer.tips("手机号不符合要求","input[name=mobilephone]",{time:1500,tips:[2,"#F13D3D"]});
+            	return false;
+            }
+            var pwd = $("input[name=pwd]").val();
+            if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(pwd)){
+					layer.tips("密码不符合要求","input[name=pwd]",{time:1500,tips:[2,"#F13D3D"]});
+					return false;
+				}
+			var rwd = $("input[name=rwd]").val();
+			if(!(pwd == rwd)){
+				layer.tips("密码不一致","input[name=rwd]",{time:1500,tips:[2,"#F13D3D"]});
+				return false;
+			}
+          $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('home/Regist/regist')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code == 1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    location.href=("{:url('home/Login/login')}");
+                  })
+                }else{
+                  layer.msg(res.msg,{icon:2,time:1500});
+                }
+              }
+            })
+      	}
+      })
+	</script>
+	</body>
+</html>

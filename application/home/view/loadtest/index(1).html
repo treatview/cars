@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>北京 - 锐车</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta content="锐车" name="keywords" />
+	<meta content="锐车" name="description" />
+	<link rel="stylesheet" href="/static/js/swiper/css/swiper.min.css">
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css?t=">
+	<link rel="stylesheet" type="text/css" href="/static/home/css/style.css?t=">
+	<script type="text/javascript" src="/static/admin/jq/jquery1.8.3.min.js"></script>
+	<script type="text/javascript" src="/static/admin/assets/layui.js"></script>
+	<script type="text/javascript" src="/static/js/common.js?t="></script>
+	<script type="text/javascript" src="/static/js/swiper/js/swiper.min.js"></script>
+
+  </head>
+<body>
+	<script language="JavaScript">
+$(function(){
+	$(".nav_all_types").hover(function(){
+		$(".show_all_types .layui-icon").html("&#xe619;");
+		$(".all_types_box").show();
+	},function(){
+		$(".show_all_types .layui-icon").html("&#xe61a;");
+		$(".all_types_box").hide();
+	});
+
+	//城市选择
+	$(".citymark a").click(function() {
+		var mark = $(this).attr("dataid");
+		var citytop = $(".city-list").scrollTop()+$("#"+mark).position().top - 50;
+		$(".city-list").animate({
+			scrollTop: citytop
+		}, {duration: 500, easing: "swing"});
+		return false;
+	});
+
+	$(".selectcity").click(function(event) {
+		if($(".citylist-box").is(":hidden")){
+			$(this).addClass("whitebg");
+			$(".selectcity .layui-icon").html("&#xe619;");
+			$(".citylist-box").removeClass("layui-hide");
+		}
+		else{
+			$(this).removeClass("whitebg");
+			$(".selectcity .layui-icon").html("&#xe61a;");
+			$(".citylist-box").addClass("layui-hide");
+		}
+		event.stopPropagation();//这句是必须
+	});
+
+
+	$(document).bind("click",function(e){
+		var target  = $(e.target);
+		if(target.closest(".citylist-box").length == 0){
+			$('.selectcity').removeClass("whitebg");
+			$(".selectcity .layui-icon").html("&#xe61a;");
+			$(".citylist-box").addClass("layui-hide");
+		}
+		e.stopPropagation();
+	});
+
+	$(".changecity").click(function() {
+		var city = $(this).attr("data");
+		$.ajax({
+			url: "/index.php?m=ajax&ajax=1&changecity=1",
+			data:{city:city},
+			type: "get",
+			dataType: "json",
+			success: function(data){
+				if(data.status == 'y'){
+					window.location.reload();
+				}
+			}
+		});
+	});
+})
+</script>
+<!--头部-->
+<div class="header">
+	<div class="layui-container">
+		<div class="layui-row">
+			<div class="layui-col-md2">
+				<div class="logo">
+					<a href="/beijing">锐车</a>
+				</div>
+			</div>
+			<div class="layui-col-md5">
+				<div class="changecitymenu">
+					<a href="javascript:;" class="changecity selectcity">北京 <i class="layui-icon" style="font-size:12px;">&#xe61a;</i></a>
+					<div class="citylist-box layui-hide">
+						<div class="citymark">
+							<a href="javascript:;" dataid="cityquanguo">全</a>
+								<a href="javascript:;" dataid="cityA">A</a>
+								<a href="javascript:;" dataid="cityB">B</a>
+								<a href="javascript:;" dataid="cityC">C</a>
+								<a href="javascript:;" dataid="cityD">D</a>
+								<a href="javascript:;" dataid="cityE">E</a>
+								<a href="javascript:;" dataid="cityF">F</a>
+								<a href="javascript:;" dataid="cityG">G</a>
+								<a href="javascript:;" dataid="cityH">H</a>
+								<a href="javascript:;" dataid="cityJ">J</a>
+								<a href="javascript:;" dataid="cityK">K</a>
+								<a href="javascript:;" dataid="cityL">L</a>
+								<a href="javascript:;" dataid="cityM">M</a>
+								<a href="javascript:;" dataid="cityN">N</a>
+								<a href="javascript:;" dataid="cityP">P</a>
+								<a href="javascript:;" dataid="cityQ">Q</a>
+								<a href="javascript:;" dataid="cityR">R</a>
+								<a href="javascript:;" dataid="cityS">S</a>
+								<a href="javascript:;" dataid="cityT">T</a>
+								<a href="javascript:;" dataid="cityW">W</a>
+								<a href="javascript:;" dataid="cityX">X</a>
+								<a href="javascript:;" dataid="cityY">Y</a>
+								<a href="javascript:;" dataid="cityZ">Z</a>
+						</div>
+					</div>
+			   </div>
+			</div>
+			<div class="layui-col-md4">
+				<ul class="nav layui-clear">
+					<li class="selected"><a href="/beijing">首页</a></li>
+					<li ><a href="/beijing/buycar/">买车</a></li>
+					<li ><a href="/beijing/sellcar/">卖车</a></li>
+					<li ><a href="/beijing/news/">宝典</a></li>
+				</ul>
+			</div>
+			<div class="layui-col-md1">
+				<div class="toplogin">
+					<i class="layui-icon">&#xe612;</i> <a href="{:url('home/Login/login')}">登录</a> <span class="topline">/</span> <a href="{:url('home/Regist/regist')}">注册</a>				</div>
+			</div>
+		</div>
+	</div>
+</div>	<!--幻灯片-->
+	<div class="flimbox">
+		<div class="layui-carousel" id="test1">
+			<div carousel-item>
+				{foreach name="list" item="vo"}
+					<div class="swiper-slide">
+						<div style="background: url({$vo.slide_pic}) no-repeat center center;background-size:auto 100%;height:500px;">
+						<a href="http://ruiche.simcms.com" style="display:block;width:100%;height:500px;"></a>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+			<div class="swiper-pagination"></div>
+		</div>
+		<script>        
+		  layui.use('carousel', function(){
+			  var carousel = layui.carousel;
+			  //建造实例
+			  carousel.render({
+			    elem: '#test1'
+			    ,width: '100%' //设置容器宽度
+			    ,height: '500px'
+			    ,arrow: 'none' //始终显示箭头
+			    ,indicator: 'none'
+			  });
+			});        
+		</script>
+		<div class="topsearch">
+			<div class="input-group">
+			  <input type="text" name="k" class="search-keyword" placeholder="请输入感兴趣的品牌、车系"><span class="input-group-btn"><button type="submit" class="search-button" id="search"> 立即搜索</button></span>
+			</div>
+		</div>
+	</div>
+	<div class="layui-container" style="margin-top:-80px;">
+		<div class="left-search">
+			<div class="left-search-box layui-clear">
+				<div class="left-search-box-item rightborder" style="width:45%">
+					<div class="left-search-subbox">
+						<div class="title indexbrand">
+							<div class="s-title">品牌 <i class="layui-icon rightj">&#xe61a;</i></div>
+							<div class="allbrand-box active-box">
+								<div class="subCate">
+									<div class="branddlistbox layui-clear">
+										<div class="brandleft">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-container">
+		<div class="index-box">
+			<div class="title">友情链接</div>
+			<div class="flinklist">	
+				{foreach name="$link" item="vo"}
+					<a href="{$vo.link_src}}" target="_blank">{$vo.link_name}</a>
+				{/foreach}
+			</div>
+		</div>
+	</div>
+	<div class="service-box">
+	<div class="layui-container layui-clear">
+		<div class="service-box-item first">
+			<h3>售后服务电话</h3>
+			<ul>
+				<li><span class="tel">010-58480317</span></li>						
+				<li>phpstat@phpstat.net</li>
+			</ul>
+		</div>
+		<div class="service-box-item">
+			<h3>买车宝典</h3>
+			<ul>
+				<li><a href="/news/1/1">车况鉴别</a></li>
+				<li><a href="/news/2/1">选车技巧</a></li>
+				<li><a href="/news/21/1">过户缴费</a></li>
+			</ul>
+		</div>
+		<div class="service-box-item">
+			<h3>客服中心</h3>
+			<ul>
+				<li><a href="/about/3">网站合作</a></li>
+				<li><a href="/about/4">联系我们</a></li>
+			</ul>
+		</div>
+		<div class="service-box-item">
+			<h3>意见反馈</h3>
+			<ul>
+				<li><a href="/feedback/">投诉与建议</a></li>
+			</ul>
+		</div>
+		<div class="service-box-item">
+			<h3>联系我们</h3>
+			<ul>
+				<li><a href="/about/1">关于我们</a></li>
+				<li><a href="/about/2">人才招聘</a></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	<div class="foot-box mt20">
+		<div class="layui-container">
+			<p class="copyright">锐车   免费咨询：010-58480317</p>
+			<p class="copyright"> Copyright 2018 锐车 版权所有. 锐车</p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function () {
+			//搜索
+			$('#search').click(function () {
+				var keyword = $("input[name=k]").val();
+				location.href = "/buycar/_"+keyword;
+			});
+
+			$("body").keydown(function(event) {
+				if (event.keyCode == "13") {
+					$('#search').click();
+				}
+			});
+
+			$(".indexbrand").hover(
+				function () {
+					$(".rightj").hide();
+					$(this).parent().parent().addClass("active");
+					$(this).children('.active-box').show();
+				},
+				 function () {
+					$(".rightj").show();
+					$(this).parent().parent().removeClass("active");
+					$(this).children('.active-box').hide();
+				}
+			);
+		});
+	</script>
+</body>

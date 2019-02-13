@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+    <style type="text/css">
+       /*.laytable-cell-1-news_pic{height: 60px;line-height: 60px}*/
+       .layui-table-cell {height: inherit;}
+      .laytable-cell-1-10{height: 60px;line-height: 60px} 
+      .laytable-cell-1-news_id{height: 60px;line-height:60px} 
+    </style>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">二手车</a>
+                  <a><cite>车系管理</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增</button>
+                        &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe669;</i> 
+                      <table lay-filter="catelist" lay-data="{height:'450','width':1200,'page':true,'limit':4,'limits':[4,15,20],id:'testReload'}">
+                        {literal}
+                        <thead >
+                          <tr >
+                            <th lay-data="{field:'series_id',width:60,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'series_name',width:160,align:'center'}">名称</th>
+                            <th lay-data="{field:'bnd_name','sort':true,width:200,align:'center'}">所属品牌</th>
+                            <th lay-data="{field:'series_group','sort':true,width:200,align:'center'}">分组</th>
+                            <th lay-data="{field:'series_status',width:120,templet:'#ifshow',align:'center'}">显示状态</th>
+                            <th lay-data="{width:160,toolbar:'#toolbar',align:'center',fixed:'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach name='data' item="vo"}
+
+                            <tr >
+                                <td align='center'>{$vo.series_id}</td>
+                                <td align='center'>{$vo.series_name}</td>
+                                <td align='center'>{$vo.bnd_name}</td>
+                                <td align='center'>{$vo.series_group}</td>
+                                <td align='center'>{$vo.series_status}
+                                </td>
+                                <td align='center'></td>
+                            </tr>
+
+                          {/foreach}
+                        </tbody>
+                      </table>
+                        <tfoot>
+                              <div class="page">
+                                
+                              </div>
+                        </tfoot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script><script src="/static/admin/js/jquery.form.js"></script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏"  lay-event='switch' {{ d.series_status==1?'checked':''}} lay-filter='ifshow' dataid="{{ d.series_id }}">
+    </script>
+
+    <script type="text/html" id="toolbar">
+      <a lay-event="edit" class="layui-btn layui-btn-xs layui-btn-warm">编辑</a>
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    // width:1200,
+  });
+/*var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+table.reload('testReload', {
+  where: { //设定异步数据接口的额外参数，任意设
+    id: demoReload.val(),
+  }
+  ,page: {
+    curr: 1 //重新从第 1 页开始
+  }
+});
+    }
+  }
+$('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });*/
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var seriesid = obj.data.series_id;
+    if(evt=="del"){
+      layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+        $.ajax({
+          type:'get',
+          url:'{:url("admin/Carseries/seriesDel")}',
+          data:"seriesid="+seriesid,
+          dataType:"json",
+          success:function(res){
+            if(res.code==0){
+              layer.msg(res.msg,{icon:2,time:1500});
+            }else{
+              layer.msg(res.msg,{icon:1,time:1500},function(){
+                obj.del();
+                location.reload();
+              })
+            }
+          }
+        })
+      })
+    }else if(evt=="edit"){
+      // 执行编辑操作
+      layer.open({
+      fix: false, //不固定
+      maxmin: true,
+      shade:0.4,
+      type: 2, 
+      area:['850px','450px'],
+      title:"品牌修改",
+      content: '{:url("admin/Carseries/seriesUpdate")}?seriesid='+seriesid, 
+      })
+    }
+  })
+  form.on('switch(ifshow)',function(obj){
+      var seriesid = obj.elem.getAttribute('dataid');
+      $.ajax({
+        type:"get",
+        url:"{:url('admin/Carseries/seupdatestatus')}",
+        data:"seriesid="+seriesid,
+        dataType:'json',
+        success:function(res){
+          if(res.code==1){
+            layer.msg(res.msg,{icon:1,time:1000})
+          }
+        }
+      })
+    })
+    $(".show").click(function(){
+      var bndid = $('input[name=ifshow]').attr('dataid');
+        $.ajax({
+        type:"get",
+        url:"{:url('admin/Cars/bndupdateifshow')}",
+        data:"bndid="+bndid,
+        dataType:'json',
+        success:function(res){
+          if(res.code==1){
+            layer.msg(res.msg,{icon:1,time:1000});
+            location.reload();
+          }
+        }
+      })
+  })
+  $(".add").click(function(){
+    layer.open({
+    fix: false, //不固定
+    maxmin: true,
+    shade:0.4,
+    type: 2, 
+    area:['900px','450px'],
+    title:"新增车系",
+    content: "{:url('admin/Carseries/seriesAdd')}", 
+    })   
+  })
+ 
+    </script>
+</body>
+</html>

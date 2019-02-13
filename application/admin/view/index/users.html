@@ -1,0 +1,388 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+    <style type="text/css">
+       /*.laytable-cell-1-news_pic{height: 60px;line-height: 60px}*/
+       .layui-table-cell {height: inherit;}
+      .laytable-cell-1-10{height: 60px;line-height: 60px} 
+      .laytable-cell-1-news_id{height: 60px;line-height:60px} 
+    </style>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">新闻</a>
+                  <a><cite>新闻管理</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增</button>
+                        &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe669;</i> 
+                      <div class="layui-form layui-form-item" style="display:none">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">用户名:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                              <input type="text" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">邮箱:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                              <input type="text" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">性别:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <select name="sex">
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>     
+                            </div>
+                            <button class="layui-btn layui-btn-blue">查询</button>
+                            <button class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                      </div>
+                      <table lay-filter="catelist" lay-data="{height:'450','width':1200,'page':true,'limit':4,'limits':[4,15,20],id:'testReload'}">
+                        {literal}
+                        <thead >
+                          <tr >
+                            <th lay-data="{field:'news_id',width:60,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'cate_name',width:98,'sort':true,align:'center'}">所属分类</th>
+                            <th lay-data="{field:'news_title','sort':true,width:200,align:'center'}">文章标题</th>
+                            <th lay-data="{field:'news_pic',minWidth:200,align:'center',style:'height:60px'}">文章图片</th>
+                            <th lay-data="{field:'news_des',width:160,align:'center'}">描述</th>
+                            <th lay-data="{field:'news_keywords',width:80,align:'center'}">关键字</th>
+                            <th lay-data="{field:'news_puttime',width:180,align:'center'}">更新时间</th>
+                            <th lay-data="{field:'news_click',width:80,align:'center'}">点击量</th>
+                            <th lay-data="{field:'news_author',width:100,align:'center'}">作者</th>
+                            <th lay-data="{field:'news_ifcommand',width:120,templet:'#ifshow',align:'center'}">是否推荐</th>
+                            <th lay-data="{width:140,toolbar:'#toolbar',align:'center',fixed:'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach name='data' item="vo"}
+                            <tr >
+                                <td align='center'>{$vo.news_id}</td>
+                                <td align='center'>{$vo.cate_name}</td>
+                                <td align='center'>{$vo.news_title}</td>
+                                <td align='center' lay-data="{'height':100}">
+                                    {foreach name="$vo.news_pic|json_decode" item="v"}
+                                   <img src="/uploads/{$v}" alt="" width="80px" height="60px">
+                                   {/foreach}
+                                </td>
+                                <td align='center'>{$vo.news_des}</td>
+                                <td align='center'>{$vo.news_keywords}</td>
+                                <td align='center'>{:date("Y-m-d H:i:s",$vo.news_puttime)}</td>
+                                <td align='center'>{$vo.news_click}</td>
+                                <td align='center'>{$vo.news_author}</td>
+                                <td align='center'>{$vo.news_ifcommand}</td>
+                                <td align='center'></td>
+                            </tr>
+                          {/foreach}
+                        </tbody>
+                      </table>
+                        <tfoot>
+                              <div class="page">
+                                
+                              </div>
+                        </tfoot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script><script src="/static/admin/js/jquery.form.js"></script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="推荐|撤回"  lay-event='switch' {{ d.news_ifcommand==1?'checked':''}} lay-filter='ifshow' dataid="{{ d.news_id }}">
+    </script>
+
+    <script type="text/html" id="toolbar">
+      <a lay-event="edit" class="layui-btn layui-btn-xs layui-btn-warm">编辑</a>
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    // width:1200,
+  });
+/*var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+table.reload('testReload', {
+  where: { //设定异步数据接口的额外参数，任意设
+    id: demoReload.val(),
+  }
+  ,page: {
+    curr: 1 //重新从第 1 页开始
+  }
+});
+    }
+  }
+$('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });*/
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var newsid = obj.data.news_id;
+    if(evt=="del"){
+      layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+        $.ajax({
+          type:'get',
+          url:'{:url("admin/News/newsDel")}',
+          data:"newsid="+newsid,
+          dataType:"json",
+          success:function(res){
+            if(res.code==0){
+              layer.msg(res.msg,{icon:2,time:1500});
+            }else{
+              layer.msg(res.msg,{icon:1,time:1500},function(){
+                obj.del();
+                location.reload();
+              })
+            }
+          }
+        })
+      })
+    }else if(evt=="edit"){
+      // 执行编辑操作
+      layer.open({
+      fix: false, //不固定
+      maxmin: true,
+      shade:0.4,
+      type: 2, 
+      area:['850px','450px'],
+      title:"新闻修改",
+      content: '{:url("admin/News/newsUpdate")}?newsid='+newsid, 
+      })
+    }
+  })
+  form.on('switch(ifshow)',function(obj){
+      var newsid = obj.elem.getAttribute('dataid');
+      console.log(newsid);
+      $.ajax({
+        type:"get",
+        url:"{:url('admin/News/updateifcomand')}",
+        data:"newsid="+newsid,
+        dataType:'json',
+        success:function(res){
+          if(res.code==1){
+            layer.msg(res.msg,{icon:1,time:1000})
+          }
+        }
+      })
+    })
+
+  $(".add").click(function(){
+    layer.open({
+    fix: false, //不固定
+    maxmin: true,
+    shade:0.4,
+    type: 2, 
+    area:['900px','450px'],
+    title:"新增新闻",
+    content: "{:url('admin/News/newsAdd')}", 
+    })   
+  })
+    </script>
+</body>
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">用户</a>
+                  <a><cite>用户组</cite></a>
+                </span>
+                <h2 class="title">用户组</h2>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box">
+                        <div class="layui-form layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-form-mid">用户名:</div>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                  <input type="text" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid">邮箱:</div>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                  <input type="text" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid">性别:</div>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <select name="sex">
+                                        <option value="1">男</option>
+                                        <option value="2">女</option>
+                                    </select>     
+                                </div>
+                                <button class="layui-btn layui-btn-blue">查询</button>
+                                <button class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                        <button class="layui-btn layui-btn-blue"><i class="layui-icon">&#xe654;</i>新增</button>
+                        <table id="demo"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  
+  //展示已知数据
+  table.render({
+    elem: '#demo'
+    ,cols: [[ //标题栏
+      {field: 'id', title: 'ID', width: 80, sort: true}
+      ,{field: 'username', title: '用户名', width: 120}
+      ,{field: 'email', title: '邮箱', minWidth: 150}
+      ,{field: 'sign', title: '签名', minWidth: 160}
+      ,{field: 'sex', title: '性别', width: 80}
+      ,{field: 'city', title: '城市', width: 100}
+      ,{field: 'experience', title: '积分', width: 80, sort: true}
+    ]]
+    ,data: [{
+      "id": "10001"
+      ,"username": "杜甫"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "116"
+      ,"ip": "192.168.0.8"
+      ,"logins": "108"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10002"
+      ,"username": "李白"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "12"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+      ,"LAY_CHECKED": true
+    }, {
+      "id": "10003"
+      ,"username": "王勃"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "65"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10004"
+      ,"username": "贤心"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "666"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10005"
+      ,"username": "贤心"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "86"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10006"
+      ,"username": "贤心"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "12"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10007"
+      ,"username": "贤心"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "16"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }, {
+      "id": "10008"
+      ,"username": "贤心"
+      ,"email": "xianxin@layui.com"
+      ,"sex": "男"
+      ,"city": "浙江杭州"
+      ,"sign": "人生恰似一场修行"
+      ,"experience": "106"
+      ,"ip": "192.168.0.8"
+      ,"logins": "106"
+      ,"joinTime": "2016-10-14"
+    }]
+    ,skin: 'line' //表格风格
+    ,even: true
+    ,page: true //是否显示分页
+    ,limits: [5, 7, 10]
+    ,limit: 5 //每页默认显示的数量
+  });
+    </script>
+</body>
+>>>>>>> 759166a5600271d3cb8d412deaa1ea0e2a9a8f4b
+</html>

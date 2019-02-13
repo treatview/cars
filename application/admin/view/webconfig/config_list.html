@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">系统配置</a>
+                  <a><cite>网站配置项</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增配置项</button>
+        <form class="layui-form layui-card-body" action="" id="configform" accept-charset="UTF-8">             
+      		<table lay-filter="configlist" >
+                        {literal}
+                        <thead>
+                          <tr>
+                            <th lay-data="{field:'info',width:200}">配置项</th>
+                            <th lay-data="{field:'value',width:600}">配置项内容</th>
+                            <th lay-data="{width:200,toolbar:'#toolbar',align:'center','fixed':'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach $list as $key=>$vo}
+                          <tr>
+                            <td align='center' style='width:200px'>{$vo.info}</td>
+                            <td align="left"><input type="text" name="{$vo.varname}" value='{$vo.value}' style="width: 500px"></td>
+                          </tr>
+                          {/foreach}
+                        </tbody>
+            </table>
+            <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn layui-btn-blue" type="submit">保存修改</button>
+                    </div>
+            </div>
+        	</form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/js/layerwin.js"></script>
+    <script type="text/html" id="toolbar">
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <!-- 表单验证js文件start -->
+    {include file="public/validate"}
+<!-- 表单验证js文件end-->
+    <script>
+    var element = layui.element;
+    var table = layui.table;
+    var form = layui.form;
+    table.init('configlist',{
+      width:1000
+    });
+
+    table.on("tool(configlist)",function(obj){
+    var evt = obj.event;
+    var info = obj.data.info;
+    // console.log(obj);
+        if(evt=="del"){
+          //执行删除操作
+          layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+            $.ajax({
+              type:'get',
+              url:'{:url("admin/webconfig/configDel")}',
+              data:"info="+info,
+              dataType:"json",
+              success:function(res){
+                if(res.code==0){
+                  layer.msg(res.msg,{icon:2,time:1500});
+                }else{
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    obj.del();
+                  })
+                }
+              }
+            })
+          })
+        }
+      })
+    	 $("#configform").validate({
+          submitHandler:function(form){
+           
+            $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('admin/webconfig/configUpdate')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code==1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //刷新窗口
+                    location.reload();
+                  })
+                }
+              }
+            })
+          
+          }
+        })
+       $(".add").click(function(){
+          // location.href='{:url('admin/News/cateAdd')}'
+          layer_show('配置项添加','{:url("admin/webconfig/configAdd")}',"800","400");
+        })
+    </script>
+  </body>
+  </html>

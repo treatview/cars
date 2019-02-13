@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+	<meta content="锐车" name="keywords" />
+	<meta content="锐车" name="description" />
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css?t=">
+	<link rel="stylesheet" type="text/css" href="/static/home/css/style.css?t=">
+	<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+	<script type="text/javascript" src="/static/admin/assets/layui.js"></script>
+	</head>
+	<body class="loginbg">
+	<div class="loginhead">
+		<div class="loginheadbox layui-clear">
+			<div class="logo">
+				<a href="/"><img src=""></a>
+			</div>
+			<div class="logintext">
+				还没有锐车账号？&nbsp;&nbsp;<a href="{:url('home/Regist/regist')}" target="_blank" style="color:#f60;">立即注册</a>
+			</div>
+		</div>
+	</div>
+	<div class="layui-container">
+		<div class="login_main">
+		<div class="title">登录锐车</div>
+			<div class="mt20">
+				<form name="loginform" id="loginform" class="layui-form layui-form-pane">
+					<div class="layui-form-item">
+						<div class="layui-col-md6 layui-col-md-offset3">
+							<input type="text" class="layui-input" placeholder="请输入用户名" name="user" id="user" lay-verify=""/> 
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-col-md6 layui-col-md-offset3">
+							<input type="password" placeholder="请输入密码" id="pwd" class="layui-input" name="pwd" lay-verify=""/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-col-md6 layui-col-md-offset3">
+							<input type="submit" value="登 录" class="layui-btn  layui-btn-danger layui-btn-fluid" lay-submit="">
+					
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-col-md4 layui-col-md-offset3">
+							&nbsp;
+						</div>
+						<div class="layui-col-md2" style="text-align:right;">
+							<a href="/forgetpwd/" style="color:#f60;">忘记密码？</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="logincopyright">
+		Copyright  2015 锐车 版权所有. 锐车
+	</div>
+	</body>
+	{include file="public/validate"}
+<script>
+layui.use('layer',function(){
+        var layer = layui.layer;
+        layer.config({
+          icon:2,
+          tips:[2,"#123456"],
+          time:1000,
+        })
+        $("#loginform").validate({
+          submitHandler:function(form){
+            var name = $("#user").val();
+            if(name ==''){
+              layer.tips('用户名不能为空',"input[id='user']");
+              return false;
+            }
+            var password = $("#pwd").val();
+            if(password == ""){
+                layer.tips("密码不能为空","input[id='pwd']");
+                return false;
+            }
+
+            $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('home/Login/login')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code == 1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                   location.href="{:url('home/index/index')}";
+                  })
+                }else{
+                layer.msg(res.msg,{icon:2,time:1500,});
+                }
+              }
+            })
+          
+          }
+        })
+      })
+</script>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layui.form小例子</title>
+<link rel="stylesheet" href="/static/admin/assets/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="/static/admin/assets/css/view.css">
+  <style type="text/css">
+    .change{margin-top: 20px}
+  </style>
+</head>
+<body>
+  <div class="change"></div>
+<form class="layui-form" action="" id="seriesform">  
+  <div class="layui-form-item">
+      <label class="layui-form-label">品牌</label>
+      <div class="layui-input-inline">
+        <select name="brand" id="brand" lay-filter='brand'>
+          <option value="0">请选择</option>
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+          {foreach $brand as $vo}
+            
+          <option value="{$vo.bnd_id}">{$vo.bnd_name}</option>
+            
+          {/foreach}
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+      <label class="layui-form-label">车系</label>
+      <div class="layui-input-inline">
+        <select name="series" id="series" lay-filter='series'>
+          <option value="0" >请选择</option>
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">车型名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="tpname"  lay-verify="required" placeholder="请输入车型名称" autocomplete="off" class="layui-input">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">年份</label>
+    <div class="layui-input-inline">
+      <input type="text" name="year"  lay-verify="required" placeholder="请输入年份" autocomplete="off" class="layui-input">    
+    </div>
+    <div class="layui-input-inline" style="margin-top:8px">
+      <span >年</span> 
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">指导价</label>
+    <div class="layui-input-inline">
+      <input type="text" name="price"  lay-verify="required" placeholder="请输入指导价" autocomplete="off" class="layui-input">    
+    </div>
+    <div class="layui-input-inline" style="margin-top:8px">
+      <span >万元</span> 
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">排量</label>
+    <div class="layui-input-inline">
+      <input type="text" name="output"  lay-verify="required" placeholder="请输入排量" autocomplete="off" class="layui-input">    
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">排放标准</label>
+    <div class="layui-input-inline">
+      <input type="text" name="output_stand"  lay-verify="required" placeholder="请输入排放标准" autocomplete="off" class="layui-input">    
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">变速器</label>
+    <div class="layui-input-inline">
+      <input type="text" name="ty_trans"  lay-verify="required" placeholder="请输入变速器名" autocomplete="off" class="layui-input">    
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+  <script src="/static/admin/assets/layui.all.js"></script>
+  <script src="/static/admin/js/layerwin.js"></script>
+  <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="/static/admin/js/jquery.form.js"></script>
+<script>
+  layui.use(['form','layer'],function(){
+    var upload = layui.upload;
+    var layer = layui.layer;
+    var form = layui.form;
+     //
+      form.on('select(brand)', function(data){
+        // console.log(data.value); //得到被选中的值
+        $.post("{:url('admin/Cartype/select')}","id="+data.value,function(res){
+        var data = eval("("+res+")");
+        var arr = "";
+        for(var i in data){
+            arr+="<option value='"+data[i].series_id+"'>";
+            arr+=data[i].series_name;
+            arr+="</option>";
+          }  
+          $('#series').html(arr);
+          //重新渲染
+          form.render();
+        },false);
+
+      })
+    var check = 0;
+    $("input[name=tpname]").blur(function(){
+        var val = $(this).val();
+        $.ajax({
+          type:'get',
+          url:"{:url('admin/Cartype/checkTypename')}",
+          data:{'name':val},
+          dataType:"json",
+          async:false,
+          success:function(res){
+            if(res.code==0) {
+              layer.tips(res.msg,"input[name=tpname]",{time:1000,tips:[3,"#F02525"]});
+              check = 1;
+            }
+          }
+        })
+      })
+      if(check == 1)
+          {
+            return false;
+          }
+
+      // var slen= $("#series").children('option').length;
+      // if(slen == 1){
+      //     // setTimeout(function(){
+      //     //   layer.tips("请在车系中添加车系，或者将其显示","select[name=series]",{time:2000,tips:[3,"#F02525"]});
+      //     // },2000);
+      //     layer.tips("请在车系中添加车系","select[name=brand]",{time:2000,tips:[3,"#F02525"]});
+      //         return false;
+      //       }
+    //验证 用户名，密码，上传图不为空
+    $("#seriesform").validate({
+      submitHandler:function(form){
+
+        var brand = $("#brand").attr('value');
+        if(brand == 0){
+          layer.msg("请选择品牌",{time:1500,
+            icon:2});
+          return false;
+        }
+        var serie= $("#series").attr('value');
+        if(series == 0){
+          layer.msg("请选择车系",{time:1500,
+            icon:2});
+          return false;
+        }
+        //年份
+        var year = $('input[name=year]').val();
+        if(!/^[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}$/.test(year)){
+              layer.tips("年份不符合要求","input[name=year]",{time:1500,tips:[2,"#F13D3D"]});
+              return false;
+            }
+        //价格
+        var price = $('input[name=price]').val();
+        if(!/^\d+(\.\d{0,2})?$/.test(price)){
+              layer.tips("指导价不符合要求","input[name=price]",{time:1500,tips:[2,"#F13D3D"]});
+              return false;
+            }
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('admin/Cartype/typeAdd')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+  })
+</script>
+</body>
+</html>

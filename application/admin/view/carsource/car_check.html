@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+    <style>
+      #imgbox{
+        position:relative;
+      }
+      .searchbox{
+        padding:20px 0px 18px 0px;position:relative;border:1px solid #e8e8e8;
+        display:none;background:#f9f9f9
+      }
+      .searchbox i{
+        font-size:20px;color:#706d6d;position:absolute;top:-10px;right:-10px;
+      }
+      .layui-input-block{margin-left:20px;}
+     </style>
+</head>
+<body class="layui-view-body">
+
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">二手车</a>
+                  <a><cite>二手车检测</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+          <form action="{:url('admin/Cars/recordTest')}"  class="layui-form" type="post"> 
+            <div class="layui-card">
+                <div class="layui-card-header">车辆检测</div>
+                <div class="layui-card-body">
+                   <div class="layui-tab layui-tab-brief" lay-filter='carcheck'>
+                      <ul class="layui-tab-title">
+                        <li class="layui-this">1.车身外观</li>
+                        <li>2.发动机舱</li>
+                        <li>3.驾驶舱</li>
+                        <li>4.启动</li>
+                        <li>5.路试</li>
+                        <li>6.底盘</li>
+                        <li>7.功能性零部件</li>
+                        <li>8.评分判断级别</li>
+                      </ul>
+                      
+                      <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show"> 
+                          <table class="layui-table" lay-filter='exterior' id='exterior' style="" lay-size="lg">
+                            <colgroup>
+                              <col width="160">
+                              {foreach $vars as $vo}
+                              <col width="180">
+                              {/foreach}
+                            </colgroup>
+                            <thead>
+                              <tr>
+                                <th>检测部位</th>
+                                {foreach $vars as $vo}
+                                <th>{$vo.evar_name}</th>
+                                {/foreach}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {foreach $parts as $vo}
+                              <tr>
+                                <td>{$vo.epart_name}</td>
+                                 {foreach $vars as $v}
+                                <td>
+                                    <div class ="layui-input-inline">
+                                      <select name="exterior_{$vo.epart_id}_{$v.evar_id}">
+                                        <option value="0">正常</option>
+                                        <option value="1">1级</option>
+                                        <option value="2">2级</option>
+                                        <option value="3">3级</option>
+                                      </select>
+                                    </div>
+                                </td>
+                                {/foreach}
+                              </tr> 
+                              {/foreach}
+                            </tbody>
+                          </table>
+                          
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $engineroom as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $driveroom as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $start as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $roadtest as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $chassis as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          {foreach $others as $vo}
+                          <div class="layui-form-item">
+                             <label class="layui-input-block">{$vo.cvar_name}</label>
+                          </div>
+                          {php}$vals=explode("|",$vo['cvar_value']){/php}
+                          <div class="layui-form-item">
+                              <div class="layui-input-block">
+                                {for start="0" end=":count($vals)" comparsion="lt"}
+                                <input type="radio" name="problem_{$vo.cvar_type}_{$vo.cvar_id}" value="{$vals[$i]}" title="{$vals[$i]}" {eq name="i" value="0"}checked{/eq} >
+                                {/for}
+                              </div>
+                          </div>
+                          {/foreach}
+                        </div>
+                        <div class="layui-tab-item">
+                          <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        </div>
+                      </div>
+                   </div>
+                </div>
+            </div>
+          </form>
+        </div>
+    </div>
+ 
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/js/layerwin.js"></script>
+   
+    <script>
+      var  layer = layui.layer;
+      var element = layui.element;
+      var table = layui.table;
+      var form = layui.form;
+      /*选项卡监听*/
+    </script>
+</body>
+</html>

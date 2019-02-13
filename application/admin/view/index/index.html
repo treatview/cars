@@ -1,0 +1,242 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <script src="/static/admin/js/jquery1.8.3.min.js"></script> -->
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/admin.css">
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header custom-header">
+            
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item slide-sidebar" lay-unselect>
+                    <a href="javascript:;" class="icon-font"><i class="ai ai-menufold"></i></a>
+                </li>
+            </ul>
+            
+            <ul class="layui-nav layui-layout-right">
+                <div class="layui-input-inline">
+                    <a href="{:url('admin/Register/index')}">注册</a>
+                    <a href="{:url('admin/Login/logout')}">退出</a>
+                </div>
+                <li class="layui-nav-item">
+                    {if condition="$name"}<a href="javascript:;">{$name}</a>
+                    {else /}<a href="{:url('admin/login/index')}">请登录</a>
+                    {/if}
+                    <dl class="layui-nav-child">
+                        <dd><a href="">帮助中心</a></dd>
+                        <dd><a href="{:url('admin/index/login')}">退出</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side custom-admin">
+            <div class="layui-side-scroll">
+
+                <div class="custom-logo">
+                    <img src="  " alt=""/>
+                    <h1>Admin Pro</h1>
+                </div>
+                <ul id="Nav" class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe609;</i>
+                            <em>主页</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/index/console')}">控制台</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>组件</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/Index/form')}">表单</a></dd>
+                            <dd>
+                                <a href="javascript:;">页面</a>
+                                <dl class="layui-nav-child">
+                                    <dd>
+                                        <a href="{:url('admin/index/login')}">登录页</a>
+                                    </dd>
+                                </dl>
+                            </dd>
+                        </dl>                        
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe612;</i>
+                            <em>用户</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/User/frontUser')}">前台用户管理</a></dd>
+                            <dd><a href="{:url('admin/User/index')}">管理员管理</a></dd>
+                        </dl>
+                    </li>  
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe705;</i>
+                            <em>新闻</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/News/catelist')}">新闻列表</a></dd>
+                            <dd><a href="{:url('admin/News/newslist')}">新闻管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe705;</i>
+                            <em>二手车</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/Carsource/sourceList')}">车源管理</a></dd>
+                            <dd><a href="{:url('admin/Carsource/carCheck')}">车辆检测</a></dd>
+                            <dd><a href="{:url('admin/Cars/brand')}">品牌管理</a></dd>
+                            <dd><a href="{:url('admin/Carseries/series')}">车系管理</a></dd>
+                            <dd><a href="{:url('admin/Cartype/typeList')}">车型管理</a></dd>
+                            <dd><a href="{:url('admin/Carlevel/leveList')}">级别管理</a></dd>
+                            <dd><a href="{:url('admin/Fenqi/payList')}">分期管理</a></dd>
+                            <dd><a href="{:url('admin/Cars/bright')}">亮点设置</a></dd>
+                            <dd><a href="{:url('admin/Cars/param')}">二手车参数</a></dd>
+                            <dd><a href="{:url('admin/Cars/paramList')}">参数值表</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe705;</i>
+                            <em>系统配置</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/Webconfig/configList')}">网站配置项</a></dd>
+                            <dd><a href="{:url('admin/Slide/slide')}">幻灯片管理</a></dd>
+                            <dd><a href="{:url('admin/Link/link')}">链接管理</a></dd>
+                            <dd><a href="">广告管理</a></dd>
+                            <dd><a href="">地区管理</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="layui-body">
+             <div class="layui-tab app-container" lay-allowClose="true" lay-filter="tabs">
+                <ul id="appTabs" class="layui-tab-title custom-tab"></ul>
+                <div id="appTabPage" class="layui-tab-content"></div>
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <p>© 2018 更多模板：<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+        </div>
+
+        <div class="mobile-mask"></div>
+    </div>
+    <script src="/static/admin/assets/layui.js"></script>
+    <script src="/static/admin/js/index.js" data-main="home"></script>
+</body>
+</html>
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/admin.css">
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header custom-header">
+            
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item slide-sidebar" lay-unselect>
+                    <a href="javascript:;" class="icon-font"><i class="ai ai-menufold"></i></a>
+                </li>
+            </ul>
+
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">BieJun</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">帮助中心</a></dd>
+                        <dd><a href="login.html">退出</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side custom-admin">
+            <div class="layui-side-scroll">
+
+                <div class="custom-logo">
+                    <h1>Admin Pro</h1>
+                </div>
+                <ul id="Nav" class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe609;</i>
+                            <em>主页</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/index/console')}">控制台</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>组件</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/index/form')}">表单</a></dd>
+                            <dd>
+                                <a href="javascript:;">页面</a>
+                                <dl class="layui-nav-child">
+                                    <dd>
+                                        <a href="{:url('admin/index/login')}">登录页</a>
+                                    </dd>
+                                </dl>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe612;</i>
+                            <em>用户</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('admin/index/users')}">用户组</a></dd>
+                            <dd><a href="{:url('admin/index/operaterule')}">权限配置</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="layui-body">
+             <div class="layui-tab app-container" lay-allowClose="true" lay-filter="tabs">
+                <ul id="appTabs" class="layui-tab-title custom-tab"></ul>
+                <div id="appTabPage" class="layui-tab-content"></div>
+            </div>
+        </div>
+
+        <div class="mobile-mask"></div>
+    </div>
+    <script src="/static/admin/assets/layui.js"></script>
+    <script src="/static/admin/js/index.js" data-main="home"></script>
+</body>
+</html>
+>>>>>>> 759166a5600271d3cb8d412deaa1ea0e2a9a8f4b

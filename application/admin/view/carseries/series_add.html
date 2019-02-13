@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layui.form小例子</title>
+<link rel="stylesheet" href="/static/admin/assets/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="/static/admin/assets/css/view.css">
+  <style type="text/css">
+    .change{margin-top: 20px}
+  </style>
+</head>
+<body>
+  <div class="change"></div>
+<form class="layui-form" action="" id="seriesform">  
+  <div class="layui-form-item">
+      <label class="layui-form-label">品牌</label>
+      <div class="layui-input-inline">
+        <select name="parent_id" id="series">
+          <option value="0">请选择</option>
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+          {foreach $data as $vo}
+           
+          <option value="{$vo.bnd_id}">{$vo.bnd_name}</option>
+          {/foreach}
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">车系名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" placeholder="请输入名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">分组</label>
+    <div class="layui-input-block">
+      <input type="text" name="series"  lay-verify="required" placeholder="请输入分组" autocomplete="off" class="layui-input">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+  <script src="/static/admin/assets/layui.all.js"></script>
+  <script src="/static/admin/js/layerwin.js"></script>
+  <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="/static/admin/js/jquery.form.js"></script>
+<script>
+  layui.use(['form','layer'],function(){
+    var form = layui.form;
+    var layer = layui.layer;
+    var check = 0;
+        $("input[name=title]").blur(function(){
+        var val = $(this).val();
+        $.ajax({
+          type:'get',
+          url:"{:url('admin/Carseries/checkSeriesname')}",
+          data:{'name':val},
+          async:false,
+          dataType:"json",
+          success:function(res){
+            if(res.code==0) {
+              layer.tips(res.msg,"input[name=title]",{time:1000,tips:[3,"#F02525"]});
+              check = 1;
+            }
+          }
+        })
+      })
+      if(check == 1)
+          {
+            return false;
+        }
+    var blen = $("#series").children('option').length;
+    if(blen == 1){
+         layer.tips("请在品牌中添加品牌,","select[name=parent_id]",{time:2000,tips:[3,"#F02525"]});
+      return false;
+    }
+    //验证 用户名，密码，上传图不为空
+    $("#seriesform").validate({
+      submitHandler:function(form){
+        var series = $("#series").attr('value');
+        if(series == 0){
+          layer.msg("请选择车系",{time:1500,
+            icon:2});
+          return false;
+        }
+        var content = $("input[name=title]").val();
+        if(content == ""){
+          layer.msg("请填写名称",{time:1500,
+            icon:2});
+          return false;
+        }
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('admin/Carseries/seriesAdd')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+  })
+</script>
+</body>
+</html>

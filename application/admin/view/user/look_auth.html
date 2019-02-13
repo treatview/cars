@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layui.form小例子</title>
+<link rel="stylesheet" href="/static/admin/assets/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="/static/admin/assets/css/view.css">
+  <style type="text/css">
+    .change{margin-top: 20px}
+    input::placeholder {
+      padding-left: 20px;
+         /* placeholder颜色  */
+         color: #D82848;
+         /* placeholder字体大小  */
+         font-size: 16px;
+         /* placeholder位置  */
+/*        text-align:center;*/
+    }
+    .layui-input-block {
+    margin-left: 130px;
+    min-height: 36px;
+}
+.layui-form-label {
+    width: 90px;
+}
+  </style>
+</head>
+<body>
+  <div class="change"></div>
+<form class="layui-form" action="" id="frontform"> 
+  <input type="hidden" name="id" value="{$data.auth_user_id}">   
+  <div class="layui-form-item">
+    <label class="layui-form-label">真实姓名</label>
+    <div class="layui-input-block">
+      <input type="text" name="user" placeholder="{$data.auth_real_name}" autocomplete="off" class="layui-input">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">身份证号码</label>
+    <div class="layui-input-block">
+      <input type="text" name="cardnum" placeholder="{$data.auth_id_card}" autocomplete="off" class="layui-input">
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">EMAIL</label>
+    <div class="layui-input-block">
+      <input type="text" name="email"  placeholder="{$data.auth_email}" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">身份证正面</label>
+    <div class="layui-input-block">
+      <div style="width: 400px;height: 200px;border:1px dashed red">
+          <img style="width: 400px;height: 200px;" src="/uploads/{:json_decode($data.auth_idcard_img,true)['front']}">
+      </div>
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">身份证反面</label>
+    <div class="layui-input-block">
+      <div style="width: 400px;height: 200px;border:1px dashed red"><img style="width: 400px;height: 200px;" src="/uploads/{:json_decode($data.auth_idcard_img,true)['back']}"></div>
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">详细地址</label>
+    <div class="layui-input-block">
+      <div id="content" >{$data.auth_des}</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否通过认证</label>
+    <div class="layui-input-block">
+      <input type="radio" name="set" value="0" title="未通过" checked>
+      <input type="radio" name="set" value="1" title="通过">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">未通过原因</label>
+    <div class="layui-input-block">
+      <input type="text" name="reson"  autocomplete="off" placeholder="{$data.auth_reason}" class="layui-input">
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+  <script src="/static/admin/assets/layui.all.js"></script>
+  <script src="/static/admin/js/layerwin.js"></script>
+  <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="/static/admin/js/jquery.form.js"></script>
+  {include file="public/trumbowyg"}
+<script>
+  setEditor($("#content"));
+  layui.use('upload',function(){
+    var upload = layui.upload;
+    var layer = layui.layer;
+    upload.render({
+      elem:'#upload',
+      url:"{:url('admin/News/newsImg')}",
+      field:'img',
+      done:function(res,index,upload){
+        if(res.code == 1){
+          var str = "<span class='box'>";
+          str += "<img width='100px' height='100px' src='"+"/uploads/"+res.pathinfo+"'>";
+          str += "<i class='layui-icon'>&#x1007;</i>";
+          str += "<input type='hidden' name='imgs[]' value='"+res.pathinfo+"'>";
+          str += "</span>";
+          $(".imgbox").append(str);
+        }
+      }
+    })
+    });
+    //删除图片
+    $(".box i").live("click",function(){
+      //页面中，该图片消失
+      var imginfo = $(this).prev().attr('src');
+      var obj = $(this).parent();
+      //服务器中，相应的图片删除
+      $.ajax({
+        type:'get',
+        url:"{:url('admin/News/delImg')}",
+        data:{imginfo:imginfo},
+        dataType:"json",
+        success:function(res){
+          if(res.code==1){
+            obj.remove();
+          }
+        }
+      })
+    })
+    //验证 用户名，密码，上传图不为空
+    $("#frontform").validate({
+      submitHandler:function(form){
+
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('admin/User/methAuth')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+
+</script>
+</body>
+</html>

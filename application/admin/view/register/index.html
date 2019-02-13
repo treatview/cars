@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>北京 - 会员注册 - 锐车</title>
+	<meta content="锐车" name="keywords" />
+	<meta content="锐车" name="description" />
+    <!-- <link rel="stylesheet" href="/static/admin/assets/css/layui.css"> -->
+    <!-- <link rel="stylesheet" href="/static/admin/assets/css/view.css"/> -->
+    <link rel="stylesheet" href="/static/admin/assets/css/style.css?t="/>
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css"/>
+
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.js"></script>
+
+	<script type="text/javascript"></script>
+	<style type="text/css">
+		.layui-form-label{width:150px;}
+		.layui-form-item .layui-form-checkbox[lay-skin=primary] {
+    margin-top: 10px;
+}
+.layui-form-checkbox[lay-skin=primary] {
+    height: auto!important;
+    line-height: normal!important;
+    min-width: 18px;
+    min-height: 18px;
+    border: none!important;
+    margin-right: 0;
+    padding-left: 28px;
+    padding-right: 0;
+    background: 0 0;
+}
+	</style>
+  </head>
+	<body class="loginbg">
+	<div class="loginhead">
+		<div class="loginheadbox layui-clear">
+			<div class="logo">
+				<a href="/"><img src=""></a>
+			</div>
+			<div class="logintext">
+				已有账号？&nbsp;&nbsp;<a href="/login/" target="_blank" style="color:#f60">立即登录</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-container">
+		<div class="login_main">
+		<div class="title"></div>
+			<div class="mt20">
+				<form name="registerform" id="registerform" method="post" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">用户名</label>
+						<div class="layui-input-inline">
+							<input type="text" name="admin" id="username" class="layui-input" placeholder="请输入用户名" lay-verify="required|phone|mobilephone"/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">密码</label>
+						<div class="layui-input-inline">
+							<input type="password" name="pwd" id="code" class="layui-input" placeholder="请填写密码" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">再次输入密码</label>
+						<div class="layui-input-inline">
+							<input name="checkcode" type="password" id="checkcode" class="layui-input" placeholder="请再次填写密码" >
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">邮箱</label>
+						<div class="layui-input-inline">
+							<input type="text" name="email" id="email" placeholder="请输入邮箱" class="layui-input" lay-verify="required|pass"/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">手机号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="phone" id="phone" placeholder="请输入手机号" class="layui-input" lay-verify="required|phone"/>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">选择性别</label>
+						<div class="layui-input-inline">
+							<input type="radio" name="sex" value="男" title="男" checked="">男
+      <input type="radio" name="sex" value="女" title="女">女
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">&nbsp;</label>
+						<div class="layui-input-inline">
+							<input type="submit" value="立即注册" class="layui-btn layui-btn-fluid layui-btn-danger" lay-submit="">
+							<input type="hidden" name="a" value="register">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">&nbsp;</label>
+						<div class="layui-input-inline" style="width:30px;"><input type="checkbox" name="agree" title="" lay-skin="primary" checked lay-verify="required"></div>
+						<div class="layui-form-mid layui-word-aux">我已经看过并同意 <a href="/about/5" target="_blank">《服务协议》</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="logincopyright">
+		 Copyright  2015 锐车 版权所有. 锐车
+	</div>
+</body>
+{include file="public/validate"}
+<script >
+	layui.use('layer',function(){
+        var layer = layui.layer;
+        layer.config({
+          icon:2,
+          tips:[2,"#123456"],
+          time:1000
+        })
+        $("#registerform").validate({
+          submitHandler:function(form){
+            var adminname = $("input[name=admin]").val();
+            if(adminname ==''){
+              layer.tips('用户名不能为空','input[name=admin]');
+              return false;
+            }
+            if(!/^[a-zA-Z0-9_-]{4,16}$/.test(adminname)){
+					layer.tips("用户名不符合要求","input[name=admin]",{time:1500,tips:[2,'#F13D3D']});
+					return false;
+			     }
+            var pwd = $("input[name=pwd]").val();
+            if(pwd ==''){
+              layer.tips('密码不能为空','input[name=pwd]');
+              return false;
+            }
+            if(!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(pwd)){
+					layer.tips("密码不符合要求","input[name=pwd]",{time:1500,tips:[2,"#F13D3D"]});
+					return false;
+				}
+
+            var checkcode = $("input[name=checkcode").val();
+            if(!(pwd == checkcode)){
+            	layer.tips('两次密码不一致','input[name=checkcode]');
+              return false;
+            }
+
+            var email = $("input[name=email]").val();
+            if(email ==''){
+              layer.tips('邮箱不能为空','input[name=email]');
+              return false;
+            }
+            if(!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(email)){
+            	layer.tips("邮箱不符合要求","input[name=email]",{time:1500,tips:[2,"#F13D3D"]});
+					return false;
+            }
+
+            var phone = $("input[name=phone]").val();
+            if(phone ==''){
+              layer.tips('手机号不能为空','input[name=phone]');
+              return false;
+            }
+            if(!/^1[34578][0-9]{9}$/.test(phone)){
+            	layer.tips("手机号不符合要求","input[name=phone]",{time:1500,tips:[2,"#F13D3D"]});
+            	return false;
+            }
+            var checkcatename = 0;
+            $.ajax({
+              type:'get',
+              url:'{:url("admin/Register/index",["type"=>"name"])}',
+              data:{name:adminname},
+              dataType:"json",
+              async:false,
+              success:function(res){
+                if(res.code==0){
+                  layer.tips(res.msg,'input[name=admin]');
+                  checkcatename = 1;
+                }
+              }
+            });
+            if(checkcatename==1){
+              return false;
+            }
+            $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('admin/Register/registerAdd')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code == 1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    location.href=("{:url('admin/Login/index')}");
+                  })
+                }else{
+                  layer.msg(res.msg,{icon:2,time:1500});
+                }
+              }
+            })
+          
+          }
+        })
+      })
+</script>
+</html>

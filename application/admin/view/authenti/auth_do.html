@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>查看认证信息</title>
+	<script src="/static/admin/jq/jquery1.8.3.min.js"></script>
+	<script src="/static/admin/dist/jquery.validate.js"></script>
+	<script src="/static/admin/dist/additional-methods.js"></script>
+	<script src="/static/admin/dist/jquery.form.js"></script>
+	<script src="/static/admin/assets/layui.js"></script>
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+	
+</head>
+<body>
+	<div class="layui-content">
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-header">认证信息 &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe666;</i></div>
+                <form class="layui-form layui-card-body" action="" id="form">
+                	<input type="hidden" name="newsid" value="{$_GET['newsid']}">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-inline">
+                    	{$list.auth_phone}
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                       {$list.auth_email}
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">正面照</label>
+                    <div class="layui-input-inline">
+                        {$list.auth_positive}
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">反面照</label>
+                    <div class="layui-input-inline">
+                     	{$list.auth_back}
+                    </div>
+                  </div>
+                   <div class="layui-form-item">
+                    <label class="layui-form-label">处理</label>
+                    <div class="layui-input-inline">
+                    	<input type="radio" name="status" value="1" title="通过">
+						<input type="radio" name="status" value="0" title="不通过">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">不通过原因</label>
+                    <div class="layui-input-inline">
+                      <textarea name="reason" placeholder="请输入不通过原因" class="layui-textarea"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn layui-btn-blue" type="submit">立即提交</button>
+                      <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+                    </div>
+                  </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script>  	
+       	function layer_close(){
+		  var index = parent.layer.getFrameIndex(window.name);
+		  parent.location.reload();
+		  parent.layer.close(index);
+		}
+    	layui.use('layer',function(){
+			var layer = layui.layer;
+			layer.config({
+	          icon:2,
+	          tips:[2,"#123456"],
+	          time:1000
+	        })
+			$("#form").validate({
+				submitHandler:function(form){
+					$(form).ajaxSubmit({
+						type:"post",
+						url:"{:url('admin/authenti/authDo')}",
+						dataType:'json',
+						success:function(res){
+							//alert(res);
+							if (res.code==1) {
+								layer.msg("提交成功",{icon:1,time:1500},function(index){
+									layer_close();
+								})
+							}else{
+								layer.msg("提交失败",{icon:2,time:1500},function(index){
+									
+								})
+							}
+						}
+					})
+				},
+				errorPlacement:function(error,element){
+					element.parent().next().html(error);
+				}
+			})
+		})
+    </script>
+</body>
+</html>

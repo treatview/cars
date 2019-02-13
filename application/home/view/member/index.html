@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>会员中心</title>
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+	<link rel="stylesheet" type="text/css" id="css" href="/static/home/css/user.css">
+	<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+	<script type="text/javascript" src="/static/admin/assets/layui.js"></script>
+	
+</head>
+<body>
+<div id="lay-body">
+	<div class="layui-layout layui-layout-admin">
+		<script>
+	$(function () {
+		$(window).resize(function() {
+			$("#lay-body").removeClass('layadmin-side-spread-sm');
+		});
+		$("body").on("click","#flexible", function(){
+			$("#lay-body").addClass('layadmin-side-spread-sm');
+			$('html').css({"overflow":"hidden"});
+			$('body').css({"overflow":"hidden"});
+		});
+
+		$("body").on("click",".layadmin-body-shade", function(){
+			$("#lay-body").removeClass('layadmin-side-spread-sm');
+		});
+		$("body").on("click","#refresh", function(){
+			location.reload();
+		});
+
+		$('.clearcache').click(function () {
+			$.ajax({
+				url: "adm.php?m=cache&a=del",
+				type: "post",
+				dataType: "json",
+				success: function(data){
+					if(data.code == 1){
+						layer.msg(data.msg, {time: 1000, icon: 1});
+						   
+							location.reload(); 
+				
+					}
+					else{
+						layer.msg(data.msg, {time: 1000, icon: 2});
+					}
+				}
+			});
+		});
+	});
+</script>
+<div class="layui-header">
+	<ul class="layui-nav layui-layout-left">
+		<li class="layui-nav-item layadmin-flexible" lay-unselect="">
+			<a href="javascript:;" id="flexible" title="侧边伸缩">
+			<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+			<a href="/" target="_blank" title="前台">
+			<i class="layui-icon layui-icon-website"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item" lay-unselect="">
+			<a href="javascript:;" id="refresh" title="刷新">
+			<i class="layui-icon layui-icon-refresh-3"></i>
+			</a>
+		</li>
+		<span class="layui-nav-bar" style="width: 0px; left: 142px; opacity: 0; top: 48px;"></span>
+	</ul>
+	<ul class="layui-nav layui-layout-right">
+	  <li class="layui-nav-item" style="margin-right:10px;">
+		<a href="javascript:;">
+		   <i class="layui-icon" style="font-size:16px; color: #aaa;">&#xe612;</i>
+           15261011679
+		</a>
+		<dl class="layui-nav-child">
+		  <dd><a href="" class="logout">退出</a></dd>
+		</dl>
+	  </li>
+	</ul>
+</div>		
+<div class="layui-side layui-side-menu">
+	<div class="layui-side-scroll">
+		<div class="layui-logo">
+            会员中心
+        </div>
+		<ul class="layui-nav layui-nav-tree">
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">首页</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="">会员首页</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是买家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="">我的预约</a></dd>
+					<dd ><a href="">我的砍价</a></dd>
+					<dd ><a href="">我的贷款</a></dd>
+					<dd ><a href="">我的收藏</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是卖家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="">车源管理</a></dd>
+					<dd ><a href="">预约管理</a></dd>
+					<dd ><a href="">砍价管理</a></dd>
+					<dd ><a href="">贷款管理</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">用户中心</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="{:url('home/Ucenter/basefile')}">基本资料</a></dd>
+					<dd ><a href="{:url('home/Ucenter/password')}">修改密码</a></dd>
+				</dl>
+			</li>
+		</ul>
+    </div>
+</div>		
+<div class="layadmin-body-shade"></div>
+<div class="layui-body">
+<div class="layui-fluid">
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">会员信息</div>
+				<div class="layui-card-body">
+					<div class="userinfo">
+						<div class="img"></div>
+						<div class="info">
+							<p>15261011679，欢迎回来！</p>
+						
+								{if $data.user_auth_info == 0}
+								<p><a href="{:url('home/Authenti/authenti')}" class="layui-btn layui-btn-sm layui-btn-normal">去认证</a></p>
+								{elseif $data.user_auth_info ==1 /}
+								<p><a href="{:url('home/Authenti/review')}?userid={$data.user_id}" class="layui-btn layui-btn-sm layui-btn-normal">审核中</a></p>
+								{elseif $data.user_auth_info ==2 /}
+								<p><a href="{:url('home/Authenti/fail')}?userid={$data.user_id}" class="layui-btn layui-btn-sm layui-btn-normal">审核未通过</a></p>
+								{else /}
+								<p><a href="{:url('home/Authenti/succes')}" class="layui-btn layui-btn-sm layui-btn-normal">已认证</a></p>
+								{/if}
+						</div>
+					</div>
+					<hr/>
+					<ul class="user-tools layui-clear">
+						<li>
+							<div>
+								<a href="user.phps">
+								<span class="i01"><i class="layui-icon" style="font-weight:bold;">&#xe608;</i></span>
+								<p>添加车源</p>
+								</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href="user.php">
+								<span class="i02"><i class="layui-icon">&#xe672;</i></span>
+								<p>身份认证</p>
+								</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href="user.php">
+								<span class="i03"><i class="layui-icon">&#xe63c</i></span>
+								<p>预约处理</p>
+								</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href="user.php">
+								<span class="i04"><i class="layui-icon">&#xe673;</i></span>
+								<p>修改密码</p>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">数据统计</div>
+				<div class="layui-card-body">
+					<div class="layui-row layui-col-space20">
+						<div class="layui-col-md6 layui-col-xs6">
+							<div class="user-counts">
+								<a href="user.php">
+								<p class="counts">0</p>
+								<p>在售车源</p>
+								</a>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-xs6">
+							<div class="user-counts">
+								<a href="user.php">
+								<p class="counts">0</p>
+								<p>已售车源</p>
+								</a>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-xs6">
+							<div class="user-counts">
+								<a href="user.php">
+								<p class="counts">0</p>
+								<p>我的收藏</p>
+								</a>
+							</div>
+						</div>
+						<div class="layui-col-md6 layui-col-xs6">
+							<div class="user-counts">
+								<a href="user.php">
+								<p class="counts">0</p>
+								<p>我的预约</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header">预约信息</div>
+				<div class="layui-card-body">
+					<table id="subscribelist" lay-filter="subscribe"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{include file="public/validate"}
+<script type="text/javascript">
+layui.use(['table','form'], function(){
+	var table = layui.table,form = layui.form;
+	
+	table.render({
+		elem: '#subscribelist' //指定原始表格元素选择器（推荐id选择器）
+		,mothod: 'get'
+		,cols: [[
+			{field:'p_allname', title: '车源', width:360}
+			,{field:'addtime', title: '预约时间', width:180}
+			,{field:'p_tel', title: '电话', width:180}
+		]] //设置表头
+		,url: ''
+		,page: { 
+			  layout: [ 'prev', 'page', 'next', 'skip', 'count'] //自定义分页布局
+		}
+		,id:'subscribe'
+		,limits:false
+		,limit:'20'
+	});
+});
+</script>																																			</div>
+	</div>
+</div>
+</body>
+</html>

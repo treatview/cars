@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>北京 - 锐车</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="锐车" name="keywords" />
+<meta content="锐车" name="description" />
+<link rel="stylesheet" href="/static/home/css/layui.css">
+<link rel="stylesheet" href="/static/home/css/swiper.min.css">
+<link rel="stylesheet" type="text/css" href="/static/home/css/style.css">
+<script type="text/javascript" src="/static/home/js/jquery.js"></script>
+<script type="text/javascript" src="/static/home/js/element.js"></script>
+<script type="text/javascript" src="/static/admin/assets/layui.js"></script>
+<script type="text/javascript" src="/static/home/js/common.js?t="></script>
+<script type="text/javascript" src="/static/home/js/swiper.min.js"></script>
+<script type="text/javascript">
+$(function () {
+//搜索
+$('#search').click(function () {
+var keyword = $("input[name=k]").val();
+location.href = "/buycar/_"+keyword;
+});
+
+$("body").keydown(function(event) {
+if (event.keyCode == "13") {
+$('#search').click();
+}
+});
+
+$(".indexbrand").hover(
+function () {
+$(".rightj").hide();
+$(this).parent().parent().addClass("active");
+$(this).children('.active-box').show();
+},
+function () {
+$(".rightj").show();
+$(this).parent().parent().removeClass("active");
+$(this).children('.active-box').hide();
+}
+);
+});
+</script>
+</head>
+<body>
+<script language="JavaScript">
+$(function(){
+$(".nav_all_types").hover(function(){
+$(".show_all_types .layui-icon").html("&#xe619;");
+$(".all_types_box").show();
+},function(){
+$(".show_all_types .layui-icon").html("&#xe61a;");
+$(".all_types_box").hide();
+});
+
+//城市选择
+$(".citymark a").click(function() {
+var mark = $(this).attr("dataid");
+var citytop = $(".city-list").scrollTop()+$("#"+mark).position().top - 50;
+$(".city-list").animate({
+scrollTop: citytop
+}, {duration: 500, easing: "swing"});
+return false;
+});
+
+$(".selectcity").click(function(event) {
+if($(".citylist-box").is(":hidden")){
+$(this).addClass("whitebg");
+$(".selectcity .layui-icon").html("&#xe619;");
+$(".citylist-box").removeClass("layui-hide");
+}
+else{
+$(this).removeClass("whitebg");
+$(".selectcity .layui-icon").html("&#xe61a;");
+$(".citylist-box").addClass("layui-hide");
+}
+event.stopPropagation();//这句是必须
+});
+
+
+$(document).bind("click",function(e){
+var target  = $(e.target);
+if(target.closest(".citylist-box").length == 0){
+$('.selectcity').removeClass("whitebg");
+$(".selectcity .layui-icon").html("&#xe61a;");
+$(".citylist-box").addClass("layui-hide");
+}
+e.stopPropagation();
+});
+
+$(".changecity").click(function() {
+var city = $(this).attr("data");
+$.ajax({
+url: "/index.php?m=ajax&ajax=1&changecity=1",
+data:{city:city},
+type: "get",
+dataType: "json",
+success: function(data){
+if(data.status == 'y'){
+window.location.reload();
+}
+}
+});
+});
+})
+</script>
+<!--头部-->
+<div class="header">
+<div class="layui-container">
+<div class="layui-row">
+<div class="layui-col-md2">
+<div class="logo">
+<a href="/beijing">锐车</a>
+</div>
+</div>
+<div class="layui-col-md4">
+<div class="changecitymenu">
+<a href="javascript:;" class="changecity selectcity">北京 <i class="layui-icon" style="font-size:12px;">&#xe61a;</i></a>
+<div class="citylist-box layui-hide">
+<div class="citymark">
+<a href="javascript:;" dataid="cityquanguo">全</a>
+<a href="javascript:;" dataid="cityA">A</a>
+<a href="javascript:;" dataid="cityB">B</a>
+<a href="javascript:;" dataid="cityC">C</a>
+<a href="javascript:;" dataid="cityD">D</a>
+<a href="javascript:;" dataid="cityE">E</a>
+<a href="javascript:;" dataid="cityF">F</a>
+<a href="javascript:;" dataid="cityG">G</a>
+<a href="javascript:;" dataid="cityH">H</a>
+<a href="javascript:;" dataid="cityJ">J</a>
+<a href="javascript:;" dataid="cityK">K</a>
+<a href="javascript:;" dataid="cityL">L</a>
+<a href="javascript:;" dataid="cityM">M</a>
+<a href="javascript:;" dataid="cityN">N</a>
+<a href="javascript:;" dataid="cityP">P</a>
+<a href="javascript:;" dataid="cityQ">Q</a>
+<a href="javascript:;" dataid="cityR">R</a>
+<a href="javascript:;" dataid="cityS">S</a>
+<a href="javascript:;" dataid="cityT">T</a>
+<a href="javascript:;" dataid="cityW">W</a>
+<a href="javascript:;" dataid="cityX">X</a>
+<a href="javascript:;" dataid="cityY">Y</a>
+<a href="javascript:;" dataid="cityZ">Z</a>
+</div>
+<ul class="city-list">
+<li id="cityquanguo">
+<span class="key">全</span>
+<a href="javascript:;" class="changecity" data="quanguo">全国</a>
+<a href="javascript:;" class="changecity" data="beijing">北京</a>
+<a href="javascript:;" class="changecity" data="langfang">廊坊</a>
+<a href="javascript:;" class="changecity" data="cangzhou">沧州</a>
+<a href="javascript:;" class="changecity" data="zhangjiakou">张家口</a>
+<a href="javascript:;" class="changecity" data="baoding">保定</a>
+<a href="javascript:;" class="changecity" data="handan">邯郸</a>
+<a href="javascript:;" class="changecity" data="qinhuangdao">秦皇岛</a>
+<a href="javascript:;" class="changecity" data="tangshan">唐山</a>
+<a href="javascript:;" class="changecity" data="shijiazhuang">石家庄</a>
+<a href="javascript:;" class="changecity" data="zhongqing">重庆</a>
+<a href="javascript:;" class="changecity" data="shanghai">上海</a>
+<a href="javascript:;" class="changecity" data="tianjin">天津</a>
+<a href="javascript:;" class="changecity" data="hengshui">衡水</a>
+</li>
+<li id="cityA">
+<span class="key">A</span>
+<a href="javascript:;" class="changecity" data="anshan">鞍山</a>
+<a href="javascript:;" class="changecity" data="aba">阿坝</a>
+<a href="javascript:;" class="changecity" data="alashan">阿拉善</a>
+<a href="javascript:;" class="changecity" data="atushi">阿图什</a>
+<a href="javascript:;" class="changecity" data="ankang">安康</a>
+<a href="javascript:;" class="changecity" data="akesu">阿克苏</a>
+<a href="javascript:;" class="changecity" data="anqing">安庆</a>
+<a href="javascript:;" class="changecity" data="ali">阿里</a>
+<a href="javascript:;" class="changecity" data="anyang">安阳</a>
+<a href="javascript:;" class="changecity" data="alaer">阿拉尔</a>
+<a href="javascript:;" class="changecity" data="anshun">安顺</a>
+<a href="javascript:;" class="changecity" data="aletai">阿勒泰</a>
+</li>
+<li id="cityB">
+<span class="key">B</span>
+<a href="javascript:;" class="changecity" data="beijing">北京</a>
+<a href="javascript:;" class="changecity" data="bayannaoer">巴彦淖尔</a>
+<a href="javascript:;" class="changecity" data="baise">百色</a>
+<a href="javascript:;" class="changecity" data="baisha">白沙</a>
+<a href="javascript:;" class="changecity" data="bayinguoleng">巴音郭楞</a>
+<a href="javascript:;" class="changecity" data="zhou">亳州</a>
+<a href="javascript:;" class="changecity" data="binzhou">滨州</a>
+<a href="javascript:;" class="changecity" data="bazhong">巴中</a>
+<a href="javascript:;" class="changecity" data="baoting">保亭</a>
+<a href="javascript:;" class="changecity" data="bole">博乐</a>
+<a href="javascript:;" class="changecity" data="baicheng">白城</a>
+<a href="javascript:;" class="changecity" data="bijie">毕节</a>
+<a href="javascript:;" class="changecity" data="baotou">包头</a>
+<a href="javascript:;" class="changecity" data="bangbu">蚌埠</a>
+<a href="javascript:;" class="changecity" data="baiyin">白银</a>
+<a href="javascript:;" class="changecity" data="baoji">宝鸡</a>
+<a href="javascript:;" class="changecity" data="baoshan">保山</a>
+<a href="javascript:;" class="changecity" data="benxi">本溪</a>
+<a href="javascript:;" class="changecity" data="beihai">北海</a>
+<a href="javascript:;" class="changecity" data="baoding">保定</a>
+<a href="javascript:;" class="changecity" data="baishan">白山</a>
+<a href="javascript:;" class="changecity" data="boertala">博尔塔拉</a>
+</li>
+<li id="cityC">
+<span class="key">C</span>
+<a href="javascript:;" class="changecity" data="zhongqing">重庆</a>
+<a href="javascript:;" class="changecity" data="chuzhou">滁州</a>
+<a href="javascript:;" class="changecity" data="chenzhou">郴州</a>
+<a href="javascript:;" class="changecity" data="chuxiong">楚雄</a>
+<a href="javascript:;" class="changecity" data="chaoyang">朝阳</a>
+<a href="javascript:;" class="changecity" data="chaohu">巢湖</a>
+<a href="javascript:;" class="changecity" data="changjiang">昌江</a>
+<a href="javascript:;" class="changecity" data="chongzuo">崇左</a>
+<a href="javascript:;" class="changecity" data="changji">昌吉</a>
+<a href="javascript:;" class="changecity" data="chizhou">池州</a>
+<a href="javascript:;" class="changecity" data="chengmai">澄迈</a>
+<a href="javascript:;" class="changecity" data="cangzhou">沧州</a>
+<a href="javascript:;" class="changecity" data="changchun">长春</a>
+<a href="javascript:;" class="changecity" data="changsha">长沙</a>
+<a href="javascript:;" class="changecity" data="chengdu">成都</a>
+<a href="javascript:;" class="changecity" data="changdu">昌都</a>
+<a href="javascript:;" class="changecity" data="changzhi">长治</a>
+<a href="javascript:;" class="changecity" data="changzhou">常州</a>
+<a href="javascript:;" class="changecity" data="chifeng">赤峰</a>
+<a href="javascript:;" class="changecity" data="changde">常德</a>
+<a href="javascript:;" class="changecity" data="chengde">承德</a>
+<a href="javascript:;" class="changecity" data="chaozhou">潮州</a>
+</li>
+<li id="cityD">
+<span class="key">D</span>
+<a href="javascript:;" class="changecity" data="datong">大同</a>
+<a href="javascript:;" class="changecity" data="diqing">迪庆</a>
+<a href="javascript:;" class="changecity" data="dazhou">达州</a>
+<a href="javascript:;" class="changecity" data="dehong">德宏</a>
+<a href="javascript:;" class="changecity" data="dezhou">德州</a>
+<a href="javascript:;" class="changecity" data="dali">大理</a>
+<a href="javascript:;" class="changecity" data="daxinganling">大兴安岭</a>
+<a href="javascript:;" class="changecity" data="dingxi">定西</a>
+<a href="javascript:;" class="changecity" data="dingan">定安</a>
+<a href="javascript:;" class="changecity" data="dongfang">东方</a>
+<a href="javascript:;" class="changecity" data="daqing">大庆</a>
+<a href="javascript:;" class="changecity" data="dandong">丹东</a>
+<a href="javascript:;" class="changecity" data="zhou">儋州</a>
+<a href="javascript:;" class="changecity" data="deyang">德阳</a>
+<a href="javascript:;" class="changecity" data="dongying">东营</a>
+<a href="javascript:;" class="changecity" data="dalian">大连</a>
+<a href="javascript:;" class="changecity" data="dong">东莞</a>
+</li>
+<li id="cityE">
+<span class="key">E</span>
+<a href="javascript:;" class="changecity" data="eerduosi">鄂尔多斯</a>
+<a href="javascript:;" class="changecity" data="ezhou">鄂州</a>
+<a href="javascript:;" class="changecity" data="enshi">恩施</a>
+</li>
+<li id="cityF">
+<span class="key">F</span>
+<a href="javascript:;" class="changecity" data="fuzhou">福州</a>
+<a href="javascript:;" class="changecity" data="fushun">抚顺</a>
+<a href="javascript:;" class="changecity" data="foshan">佛山</a>
+<a href="javascript:;" class="changecity" data="fangchenggang">防城港</a>
+<a href="javascript:;" class="changecity" data="fuxin">阜新</a>
+<a href="javascript:;" class="changecity" data="fuzhou">抚州</a>
+<a href="javascript:;" class="changecity" data="fuyang">阜阳</a>
+<a href="javascript:;" class="changecity" data="fukang">阜康</a>
+</li>
+<li id="cityG">
+<span class="key">G</span>
+<a href="javascript:;" class="changecity" data="guangzhou">广州</a>
+<a href="javascript:;" class="changecity" data="guangan">广安</a>
+<a href="javascript:;" class="changecity" data="gannan">甘南</a>
+<a href="javascript:;" class="changecity" data="guigang">贵港</a>
+<a href="javascript:;" class="changecity" data="guangyuan">广元</a>
+<a href="javascript:;" class="changecity" data="ganzhou">赣州</a>
+<a href="javascript:;" class="changecity" data="guoluo">果洛</a>
+<a href="javascript:;" class="changecity" data="guyuan">固原</a>
+<a href="javascript:;" class="changecity" data="guilin">桂林</a>
+<a href="javascript:;" class="changecity" data="guiyang">贵阳</a>
+<a href="javascript:;" class="changecity" data="ganzi">甘孜</a>
+</li>
+<li id="cityH">
+<span class="key">H</span>
+<a href="javascript:;" class="changecity" data="haerbin">哈尔滨</a>
+<a href="javascript:;" class="changecity" data="huaian">淮安</a>
+<a href="javascript:;" class="changecity" data="haixi">海西</a>
+<a href="javascript:;" class="changecity" data="huangshan">黄山</a>
+<a href="javascript:;" class="changecity" data="huanggang">黄冈</a>
+<a href="javascript:;" class="changecity" data="honghe">红河</a>
+<a href="javascript:;" class="changecity" data="hami">哈密</a>
+<a href="javascript:;" class="changecity" data="hengshui">衡水</a>
+<a href="javascript:;" class="changecity" data="heihe">黑河</a>
+<a href="javascript:;" class="changecity" data="huizhou">惠州</a>
+<a href="javascript:;" class="changecity" data="hezhou">贺州</a>
+<a href="javascript:;" class="changecity" data="hetian">和田</a>
+<a href="javascript:;" class="changecity" data="huaihua">怀化</a>
+<a href="javascript:;" class="changecity" data="hechi">河池</a>
+<a href="javascript:;" class="changecity" data="huludao">葫芦岛</a>
+<a href="javascript:;" class="changecity" data="heyuan">河源</a>
+<a href="javascript:;" class="changecity" data="hulunbeier">呼伦贝尔</a>
+<a href="javascript:;" class="changecity" data="hanzhong">汉中</a>
+<a href="javascript:;" class="changecity" data="hebi">鹤壁</a>
+<a href="javascript:;" class="changecity" data="hangzhou">杭州</a>
+<a href="javascript:;" class="changecity" data="hefei">合肥</a>
+<a href="javascript:;" class="changecity" data="haikou">海口</a>
+<a href="javascript:;" class="changecity" data="huhehaote">呼和浩特</a>
+<a href="javascript:;" class="changecity" data="huangshi">黄石</a>
+<a href="javascript:;" class="changecity" data="haidong">海东</a>
+<a href="javascript:;" class="changecity" data="hegang">鹤岗</a>
+<a href="javascript:;" class="changecity" data="haibei">海北</a>
+<a href="javascript:;" class="changecity" data="handan">邯郸</a>
+<a href="javascript:;" class="changecity" data="huainan">淮南</a>
+<a href="javascript:;" class="changecity" data="hengyang">衡阳</a>
+<a href="javascript:;" class="changecity" data="huangnan">黄南</a>
+<a href="javascript:;" class="changecity" data="huzhou">湖州</a>
+<a href="javascript:;" class="changecity" data="hainancangzu">海南藏族</a>
+<a href="javascript:;" class="changecity" data="huaibei">淮北</a>
+<a href="javascript:;" class="changecity" data="heze">菏泽</a>
+</li>
+<li id="cityJ">
+<span class="key">J</span>
+<a href="javascript:;" class="changecity" data="jinan">济南</a>
+<a href="javascript:;" class="changecity" data="jinhua">金华</a>
+<a href="javascript:;" class="changecity" data="jiangmen">江门</a>
+<a href="javascript:;" class="changecity" data="jian">吉安</a>
+<a href="javascript:;" class="changecity" data="jining">济宁</a>
+<a href="javascript:;" class="changecity" data="jiaozuo">焦作</a>
+<a href="javascript:;" class="changecity" data="jingmen">荆门</a>
+<a href="javascript:;" class="changecity" data="jiamusi">佳木斯</a>
+<a href="javascript:;" class="changecity" data="jiuquan">酒泉</a>
+<a href="javascript:;" class="changecity" data="jiyuan">济源</a>
+<a href="javascript:;" class="changecity" data="jinzhou">锦州</a>
+<a href="javascript:;" class="changecity" data="jinzhong">晋中</a>
+<a href="javascript:;" class="changecity" data="jilin">吉林</a>
+<a href="javascript:;" class="changecity" data="jingdezhen">景德镇</a>
+<a href="javascript:;" class="changecity" data="jinchang">金昌</a>
+<a href="javascript:;" class="changecity" data="jiaxing">嘉兴</a>
+<a href="javascript:;" class="changecity" data="jiujiang">九江</a>
+<a href="javascript:;" class="changecity" data="jingzhou">荆州</a>
+<a href="javascript:;" class="changecity" data="jincheng">晋城</a>
+<a href="javascript:;" class="changecity" data="jixi">鸡西</a>
+<a href="javascript:;" class="changecity" data="jiayuguan">嘉峪关</a>
+<a href="javascript:;" class="changecity" data="jieyang">揭阳</a>
+</li>
+<li id="cityK">
+<span class="key">K</span>
+<a href="javascript:;" class="changecity" data="kunming">昆明</a>
+<a href="javascript:;" class="changecity" data="kaifeng">开封</a>
+<a href="javascript:;" class="changecity" data="kelamayi">克拉玛依</a>
+<a href="javascript:;" class="changecity" data="kashi">喀什</a>
+<a href="javascript:;" class="changecity" data="kuitun">奎屯</a>
+<a href="javascript:;" class="changecity" data="kezilesu">克孜勒苏</a>
+</li>
+<li id="cityL">
+<span class="key">L</span>
+<a href="javascript:;" class="changecity" data="lanzhou">兰州</a>
+<a href="javascript:;" class="changecity" data="lishui">丽水</a>
+<a href="javascript:;" class="changecity" data="he">漯河</a>
+<a href="javascript:;" class="changecity" data="laiwu">莱芜</a>
+<a href="javascript:;" class="changecity" data="longnan">陇南</a>
+<a href="javascript:;" class="changecity" data="lingao">临高</a>
+<a href="javascript:;" class="changecity" data="linyi">临沂</a>
+<a href="javascript:;" class="changecity" data="loudi">娄底</a>
+<a href="javascript:;" class="changecity" data="linxia">临夏</a>
+<a href="javascript:;" class="changecity" data="laibin">来宾</a>
+<a href="javascript:;" class="changecity" data="liuan">六安</a>
+<a href="javascript:;" class="changecity" data="liaocheng">聊城</a>
+<a href="javascript:;" class="changecity" data="ledong">乐东</a>
+<a href="javascript:;" class="changecity" data="lingshui">陵水</a>
+<a href="javascript:;" class="changecity" data="lvliang">吕梁</a>
+<a href="javascript:;" class="changecity" data="leshan">乐山</a>
+<a href="javascript:;" class="changecity" data="liaoyang">辽阳</a>
+<a href="javascript:;" class="changecity" data="lasa">拉萨</a>
+<a href="javascript:;" class="changecity" data="liupanshui">六盘水</a>
+<a href="javascript:;" class="changecity" data="liuzhou">柳州</a>
+<a href="javascript:;" class="changecity" data="luoyang">洛阳</a>
+<a href="javascript:;" class="changecity" data="liaoyuan">辽源</a>
+<a href="javascript:;" class="changecity" data="zhou">泸州</a>
+<a href="javascript:;" class="changecity" data="lijiang">丽江</a>
+<a href="javascript:;" class="changecity" data="lianyungang">连云港</a>
+<a href="javascript:;" class="changecity" data="linzhi">林芝</a>
+<a href="javascript:;" class="changecity" data="longyan">龙岩</a>
+<a href="javascript:;" class="changecity" data="lincang">临沧</a>
+<a href="javascript:;" class="changecity" data="langfang">廊坊</a>
+<a href="javascript:;" class="changecity" data="linfen">临汾</a>
+<a href="javascript:;" class="changecity" data="liangshan">凉山</a>
+</li>
+<li id="cityM">
+<span class="key">M</span>
+<a href="javascript:;" class="changecity" data="maanshan">马鞍山</a>
+<a href="javascript:;" class="changecity" data="mianyang">绵阳</a>
+<a href="javascript:;" class="changecity" data="mudanjiang">牡丹江</a>
+<a href="javascript:;" class="changecity" data="maoming">茂名</a>
+<a href="javascript:;" class="changecity" data="meizhou">梅州</a>
+<a href="javascript:;" class="changecity" data="meishan">眉山</a>
+<a href="javascript:;" class="changecity" data="miquan">米泉</a>
+</li>
+<li id="cityN">
+<span class="key">N</span>
+<a href="javascript:;" class="changecity" data="nanjing">南京</a>
+<a href="javascript:;" class="changecity" data="nanyang">南阳</a>
+<a href="javascript:;" class="changecity" data="nanchong">南充</a>
+<a href="javascript:;" class="changecity" data="neijiang">内江</a>
+<a href="javascript:;" class="changecity" data="ningde">宁德</a>
+<a href="javascript:;" class="changecity" data="nanping">南平</a>
+<a href="javascript:;" class="changecity" data="nantong">南通</a>
+<a href="javascript:;" class="changecity" data="naqu">那曲</a>
+<a href="javascript:;" class="changecity" data="ningbo">宁波</a>
+<a href="javascript:;" class="changecity" data="nanning">南宁</a>
+<a href="javascript:;" class="changecity" data="nanchang">南昌</a>
+<a href="javascript:;" class="changecity" data="nujiang">怒江</a>
+</li>
+<li id="cityP">
+<span class="key">P</span>
+<a href="javascript:;" class="changecity" data="putian">莆田</a>
+<a href="javascript:;" class="changecity" data="pingxiang">萍乡</a>
+<a href="javascript:;" class="changecity" data="panzhihua">攀枝花</a>
+<a href="javascript:;" class="changecity" data="pingdingshan">平顶山</a>
+<a href="javascript:;" class="changecity" data="puer">普洱</a>
+<a href="javascript:;" class="changecity" data="pingliang">平凉</a>
+<a href="javascript:;" class="changecity" data="yang">濮阳</a>
+<a href="javascript:;" class="changecity" data="panjin">盘锦</a>
+</li>
+<li id="cityQ">
+<span class="key">Q</span>
+<a href="javascript:;" class="changecity" data="qiqihaer">齐齐哈尔</a>
+<a href="javascript:;" class="changecity" data="qingyuan">清远</a>
+<a href="javascript:;" class="changecity" data="qianjiang">潜江</a>
+<a href="javascript:;" class="changecity" data="qingyang">庆阳</a>
+<a href="javascript:;" class="changecity" data="qitaihe">七台河</a>
+<a href="javascript:;" class="changecity" data="qiannan">黔南</a>
+<a href="javascript:;" class="changecity" data="qiandongnan">黔东南</a>
+<a href="javascript:;" class="changecity" data="zhou">衢州</a>
+<a href="javascript:;" class="changecity" data="qinzhou">钦州</a>
+<a href="javascript:;" class="changecity" data="qianxinan">黔西南</a>
+<a href="javascript:;" class="changecity" data="quanzhou">泉州</a>
+<a href="javascript:;" class="changecity" data="qionghai">琼海</a>
+<a href="javascript:;" class="changecity" data="qinhuangdao">秦皇岛</a>
+<a href="javascript:;" class="changecity" data="qujing">曲靖</a>
+<a href="javascript:;" class="changecity" data="qingdao">青岛</a>
+<a href="javascript:;" class="changecity" data="qiongzhong">琼中</a>
+</li>
+<li id="cityR">
+<span class="key">R</span>
+<a href="javascript:;" class="changecity" data="rikaze">日喀则</a>
+<a href="javascript:;" class="changecity" data="rizhao">日照</a>
+</li>
+<li id="cityS">
+<span class="key">S</span>
+<a href="javascript:;" class="changecity" data="shanghai">上海</a>
+<a href="javascript:;" class="changecity" data="shaoxing">绍兴</a>
+<a href="javascript:;" class="changecity" data="songyuan">松原</a>
+<a href="javascript:;" class="changecity" data="suining">遂宁</a>
+<a href="javascript:;" class="changecity" data="shangluo">商洛</a>
+<a href="javascript:;" class="changecity" data="shangrao">上饶</a>
+<a href="javascript:;" class="changecity" data="suihua">绥化</a>
+<a href="javascript:;" class="changecity" data="suzhou">宿州</a>
+<a href="javascript:;" class="changecity" data="sanmenxia">三门峡</a>
+<a href="javascript:;" class="changecity" data="suizhou">随州</a>
+<a href="javascript:;" class="changecity" data="suqian">宿迁</a>
+<a href="javascript:;" class="changecity" data="shanwei">汕尾</a>
+<a href="javascript:;" class="changecity" data="shangqiu">商丘</a>
+<a href="javascript:;" class="changecity" data="shennongjialinqu">神农架林区</a>
+<a href="javascript:;" class="changecity" data="shuozhou">朔州</a>
+<a href="javascript:;" class="changecity" data="shaoguan">韶关</a>
+<a href="javascript:;" class="changecity" data="shaoyang">邵阳</a>
+<a href="javascript:;" class="changecity" data="shijiazhuang">石家庄</a>
+<a href="javascript:;" class="changecity" data="shenyang">沈阳</a>
+<a href="javascript:;" class="changecity" data="shen">深圳</a>
+<a href="javascript:;" class="changecity" data="sanya">三亚</a>
+<a href="javascript:;" class="changecity" data="shizuishan">石嘴山</a>
+<a href="javascript:;" class="changecity" data="siping">四平</a>
+<a href="javascript:;" class="changecity" data="shiyan">十堰</a>
+<a href="javascript:;" class="changecity" data="shihezi">石河子</a>
+<a href="javascript:;" class="changecity" data="shuangyashan">双鸭山</a>
+<a href="javascript:;" class="changecity" data="sanming">三明</a>
+<a href="javascript:;" class="changecity" data="shantou">汕头</a>
+<a href="javascript:;" class="changecity" data="shannan">山南</a>
+<a href="javascript:;" class="changecity" data="suzhou">苏州</a>
+<a href="javascript:;" class="changecity" data="sansha">三沙</a>
+</li>
+<li id="cityT">
+<span class="key">T</span>
+<a href="javascript:;" class="changecity" data="tianjin">天津</a>
+<a href="javascript:;" class="changecity" data="tianmen">天门</a>
+<a href="javascript:;" class="changecity" data="taizhou">泰州</a>
+<a href="javascript:;" class="changecity" data="tieling">铁岭</a>
+<a href="javascript:;" class="changecity" data="tunchang">屯昌</a>
+<a href="javascript:;" class="changecity" data="taizhou">台州</a>
+<a href="javascript:;" class="changecity" data="taian">泰安</a>
+<a href="javascript:;" class="changecity" data="tulufan">吐鲁番</a>
+<a href="javascript:;" class="changecity" data="tongling">铜陵</a>
+<a href="javascript:;" class="changecity" data="tongliao">通辽</a>
+<a href="javascript:;" class="changecity" data="tumushuke">图木舒克</a>
+<a href="javascript:;" class="changecity" data="tongren">铜仁</a>
+<a href="javascript:;" class="changecity" data="tonghua">通化</a>
+<a href="javascript:;" class="changecity" data="tianshui">天水</a>
+<a href="javascript:;" class="changecity" data="tongchuan">铜川</a>
+<a href="javascript:;" class="changecity" data="tangshan">唐山</a>
+<a href="javascript:;" class="changecity" data="taiyuan">太原</a>
+<a href="javascript:;" class="changecity" data="tacheng">塔城</a>
+</li>
+<li id="cityW">
+<span class="key">W</span>
+<a href="javascript:;" class="changecity" data="wuhan">武汉</a>
+<a href="javascript:;" class="changecity" data="weihai">威海</a>
+<a href="javascript:;" class="changecity" data="wulanchabu">乌兰察布</a>
+<a href="javascript:;" class="changecity" data="wenshan">文山</a>
+<a href="javascript:;" class="changecity" data="wanning">万宁</a>
+<a href="javascript:;" class="changecity" data="weifang">潍坊</a>
+<a href="javascript:;" class="changecity" data="wujiaqu">五家渠</a>
+<a href="javascript:;" class="changecity" data="wenchang">文昌</a>
+<a href="javascript:;" class="changecity" data="wuwei">武威</a>
+<a href="javascript:;" class="changecity" data="weinan">渭南</a>
+<a href="javascript:;" class="changecity" data="wuzhou">梧州</a>
+<a href="javascript:;" class="changecity" data="wuhai">乌海</a>
+<a href="javascript:;" class="changecity" data="wuzhong">吴忠</a>
+<a href="javascript:;" class="changecity" data="wuzhishan">五指山</a>
+<a href="javascript:;" class="changecity" data="wenzhou">温州</a>
+<a href="javascript:;" class="changecity" data="wuhu">芜湖</a>
+<a href="javascript:;" class="changecity" data="wuxi">无锡</a>
+<a href="javascript:;" class="changecity" data="wulumuqi">乌鲁木齐</a>
+<a href="javascript:;" class="changecity" data="wusu">乌苏</a>
+</li>
+<li id="cityX">
+<span class="key">X</span>
+<a href="javascript:;" class="changecity" data="xining">西宁</a>
+<a href="javascript:;" class="changecity" data="xuchang">许昌</a>
+<a href="javascript:;" class="changecity" data="xilinguole">锡林郭勒</a>
+<a href="javascript:;" class="changecity" data="xianning">咸宁</a>
+<a href="javascript:;" class="changecity" data="xishuangbanna">西双版纳</a>
+<a href="javascript:;" class="changecity" data="xingan">兴安</a>
+<a href="javascript:;" class="changecity" data="xiantao">仙桃</a>
+<a href="javascript:;" class="changecity" data="xiangxi">湘西</a>
+<a href="javascript:;" class="changecity" data="xinyang">信阳</a>
+<a href="javascript:;" class="changecity" data="xiaogan">孝感</a>
+<a href="javascript:;" class="changecity" data="xinzhou">忻州</a>
+<a href="javascript:;" class="changecity" data="xinxiang">新乡</a>
+<a href="javascript:;" class="changecity" data="xian">西安</a>
+<a href="javascript:;" class="changecity" data="xiamen">厦门</a>
+<a href="javascript:;" class="changecity" data="xuzhou">徐州</a>
+<a href="javascript:;" class="changecity" data="xiangtan">湘潭</a>
+<a href="javascript:;" class="changecity" data="xianyang">咸阳</a>
+<a href="javascript:;" class="changecity" data="xingtai">邢台</a>
+<a href="javascript:;" class="changecity" data="xinyu">新余</a>
+<a href="javascript:;" class="changecity" data="xiangyang">襄阳</a>
+<a href="javascript:;" class="changecity" data="xuancheng">宣城</a>
+</li>
+<li id="cityY">
+<span class="key">Y</span>
+<a href="javascript:;" class="changecity" data="yinchuan">银川</a>
+<a href="javascript:;" class="changecity" data="yancheng">盐城</a>
+<a href="javascript:;" class="changecity" data="yichun">宜春</a>
+<a href="javascript:;" class="changecity" data="yiyang">益阳</a>
+<a href="javascript:;" class="changecity" data="yulin">玉林</a>
+<a href="javascript:;" class="changecity" data="yangzhou">扬州</a>
+<a href="javascript:;" class="changecity" data="yongzhou">永州</a>
+<a href="javascript:;" class="changecity" data="yibin">宜宾</a>
+<a href="javascript:;" class="changecity" data="yangjiang">阳江</a>
+<a href="javascript:;" class="changecity" data="yaan">雅安</a>
+<a href="javascript:;" class="changecity" data="yining">伊宁</a>
+<a href="javascript:;" class="changecity" data="yunfu">云浮</a>
+<a href="javascript:;" class="changecity" data="yanbian">延边</a>
+<a href="javascript:;" class="changecity" data="yulin">榆林</a>
+<a href="javascript:;" class="changecity" data="yangquan">阳泉</a>
+<a href="javascript:;" class="changecity" data="yuxi">玉溪</a>
+<a href="javascript:;" class="changecity" data="yichang">宜昌</a>
+<a href="javascript:;" class="changecity" data="yingtan">鹰潭</a>
+<a href="javascript:;" class="changecity" data="yantai">烟台</a>
+<a href="javascript:;" class="changecity" data="yueyang">岳阳</a>
+<a href="javascript:;" class="changecity" data="yanan">延安</a>
+<a href="javascript:;" class="changecity" data="yichun">伊春</a>
+<a href="javascript:;" class="changecity" data="yushu">玉树</a>
+<a href="javascript:;" class="changecity" data="yuncheng">运城</a>
+<a href="javascript:;" class="changecity" data="yingkou">营口</a>
+<a href="javascript:;" class="changecity" data="yili">伊犁</a>
+</li>
+<li id="cityZ">
+<span class="key">Z</span>
+<a href="javascript:;" class="changecity" data="zhengzhou">郑州</a>
+<a href="javascript:;" class="changecity" data="zhangjiajie">张家界</a>
+<a href="javascript:;" class="changecity" data="zhanjiang">湛江</a>
+<a href="javascript:;" class="changecity" data="zhoushan">舟山</a>
+<a href="javascript:;" class="changecity" data="zhaoqing">肇庆</a>
+<a href="javascript:;" class="changecity" data="zhenjiang">镇江</a>
+<a href="javascript:;" class="changecity" data="zhoukou">周口</a>
+<a href="javascript:;" class="changecity" data="zhumadian">驻马店</a>
+<a href="javascript:;" class="changecity" data="zhongshan">中山</a>
+<a href="javascript:;" class="changecity" data="zhangye">张掖</a>
+<a href="javascript:;" class="changecity" data="zhangjiakou">张家口</a>
+<a href="javascript:;" class="changecity" data="zhangzhou">漳州</a>
+<a href="javascript:;" class="changecity" data="zhuzhou">株洲</a>
+<a href="javascript:;" class="changecity" data="zigong">自贡</a>
+<a href="javascript:;" class="changecity" data="zibo">淄博</a>
+<a href="javascript:;" class="changecity" data="zhuhai">珠海</a>
+<a href="javascript:;" class="changecity" data="zunyi">遵义</a>
+<a href="javascript:;" class="changecity" data="zaozhuang">枣庄</a>
+<a href="javascript:;" class="changecity" data="zhaotong">昭通</a>
+<a href="javascript:;" class="changecity" data="zhongwei">中卫</a>
+<a href="javascript:;" class="changecity" data="ziyang">资阳</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="layui-col-md4">
+<ul class="nav layui-clear">
+<li class="selected"><a href="/beijing">首页</a></li>
+<li ><a href="/beijing/buycar/">买车</a></li>
+<li ><a href="/beijing/sellcar/">卖车</a></li>
+<li ><a href="/beijing/news/">宝典</a></li>
+</ul>
+</div><div class="layui-col-md2">
+<div class="toplogin">
+<i class="layui-icon">&#xe612;</i>
+{if condition="$data != '' "}{$data}<a href="{:url('home/Member/index')}">会员中心</a>
+<a href="{:url('home/Login/logout')}">退出</a>
+{else /}
+<a href="{:url('home/login/login')}">请登录</a><a href="{:url('home/Regist/regist')}">注册</a>
+{/if}			</div>
+</div>
+</div>
+</div>
+</div>	<!--幻灯片-->
+<div class="flimbox">
+<div class="swiper-container">
+<div class="swiper-wrapper">
+{foreach name="list" item="vo"}
+{if $vo.slide_ifshow == 0}
+{else /}
+<div class="swiper-slide">
+<div style="background: url({$vo.slide_pic}) no-repeat center center;background-size:60% 100%;height:500px;">
+<a href="###" style="display:block;width:100%;height:500px;"></a>
+
+</div>
+</div>{/if}
+{/foreach}	 
+</div>
+<div class="swiper-pagination"></div>
+</div>
+<script>        
+var mySwiper = new Swiper ('.swiper-container', {
+loop: true,
+autoplay:true,
+pagination: {
+el: '.swiper-pagination',
+clickable:true,
+}
+})        
+</script>
+<div class="topsearch">
+<div class="input-group">
+<input type="text" name="k" class="search-keyword" placeholder="请输入感兴趣的品牌、车系"><span class="input-group-btn"><button type="submit" class="search-button" id="search"> 立即搜索</button></span>
+</div>
+</div>
+</div>
+<div class="layui-container" style="margin-top:-80px;">
+<div class="left-search">
+<div class="left-search-box layui-clear">
+<div class="left-search-box-item rightborder" style="width:45%">
+<div class="left-search-subbox">
+<div class="title indexbrand">
+<div class="s-title">品牌 <i class="layui-icon rightj">&#xe61a;</i></div>
+<div class="allbrand-box active-box">
+<div class="subCate">
+<div class="branddlistbox layui-clear"> 
+	<div class="brandleft"> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">A</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob1">奥迪</a> 
+	<a href="/beijing/buycar/list-ob2">阿斯顿·马丁</a> 
+	<a href="/beijing/buycar/list-ob3">阿尔法·罗密欧</a> 
+	<a href="/beijing/buycar/list-ob4">AC Schnitzer</a> 
+	<a href="/beijing/buycar/list-ob536">ALPINA</a> 
+	<a href="/beijing/buycar/list-ob587">ARCFOX</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">B</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob5">本田</a> 
+	<a href="/beijing/buycar/list-ob6">别克</a> 
+	<a href="/beijing/buycar/list-ob7">宝马</a> 
+	<a href="/beijing/buycar/list-ob8">比亚迪</a> 
+	<a href="/beijing/buycar/list-ob9">奔驰</a> 
+	<a href="/beijing/buycar/list-ob10">标致</a> 
+	<a href="/beijing/buycar/list-ob11">保时捷</a> 
+	<a href="/beijing/buycar/list-ob12">奔腾</a> 
+	<a href="/beijing/buycar/list-ob13">北京汽车</a> 
+	<a href="/beijing/buycar/list-ob14">北汽制造</a> 
+	<a href="/beijing/buycar/list-ob15">宝骏</a> 
+	<a href="/beijing/buycar/list-ob16">宾利</a> 
+	<a href="/beijing/buycar/list-ob17">北汽威旺</a> 
+	<a href="/beijing/buycar/list-ob18">布加迪</a> 
+	<a href="/beijing/buycar/list-ob19">巴博斯</a> 
+	<a href="/beijing/buycar/list-ob20">保斐利</a> 
+	<a href="/beijing/buycar/list-ob115">北汽绅宝</a> 
+	<a href="/beijing/buycar/list-ob144">宝龙</a> 
+	<a href="/beijing/buycar/list-ob156">北汽幻速</a> 
+	<a href="/beijing/buycar/list-ob167">北汽新能源</a> 
+	<a href="/beijing/buycar/list-ob172">宝沃</a> 
+	<a href="/beijing/buycar/list-ob499">比速</a> 
+	<a href="/beijing/buycar/list-ob573">北汽道达</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">C</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob21">长安轿车</a> 
+	<a href="/beijing/buycar/list-ob22">长城</a> 
+	<a href="/beijing/buycar/list-ob23">长安商用</a> 
+	<a href="/beijing/buycar/list-ob24">昌河</a> 
+	<a href="/beijing/buycar/list-ob497">成功</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">D</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob25">大众</a> 
+	<a href="/beijing/buycar/list-ob26">东风风行</a> 
+	<a href="/beijing/buycar/list-ob27">东南</a> 
+	<a href="/beijing/buycar/list-ob28">东风小康</a> 
+	<a href="/beijing/buycar/list-ob29">道奇</a> 
+	<a href="/beijing/buycar/list-ob30">东风风神</a> 
+	<a href="/beijing/buycar/list-ob31">DS</a> 
+	<a href="/beijing/buycar/list-ob32">东风风度</a> 
+	<a href="/beijing/buycar/list-ob33">东风</a> 
+	<a href="/beijing/buycar/list-ob34">大通</a> 
+	<a href="/beijing/buycar/list-ob142">大迪汽车</a> 
+	<a href="/beijing/buycar/list-ob170">东风风光</a> 
+	<a href="/beijing/buycar/list-ob574">电咖</a> 
+	<a href="/beijing/buycar/list-ob639">大乘汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">F</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob35">福特</a> 
+	<a href="/beijing/buycar/list-ob36">丰田</a> 
+	<a href="/beijing/buycar/list-ob37">菲亚特</a> 
+	<a href="/beijing/buycar/list-ob38">法拉利</a> 
+	<a href="/beijing/buycar/list-ob39">福田</a> 
+	<a href="/beijing/buycar/list-ob40">福迪</a> 
+	<a href="/beijing/buycar/list-ob41">飞驰商务车</a> 
+	<a href="/beijing/buycar/list-ob42">菲斯克</a> 
+	<a href="/beijing/buycar/list-ob43">弗那萨利</a> 
+	<a href="/beijing/buycar/list-ob162">福汽启腾</a> 
+	<a href="/beijing/buycar/list-ob543">飞碟</a> 
+	<a href="/beijing/buycar/list-ob545">福田乘用车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">G</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob44">广汽传祺</a> 
+	<a href="/beijing/buycar/list-ob45">广汽吉奥</a> 
+	<a href="/beijing/buycar/list-ob46">观致</a> 
+	<a href="/beijing/buycar/list-ob47">GMC</a> 
+	<a href="/beijing/buycar/list-ob48">光冈</a> 
+	<a href="/beijing/buycar/list-ob49">广汽日野</a> 
+	<a href="/beijing/buycar/list-ob586">国金</a> 
+	<a href="/beijing/buycar/list-ob636">广汽新能源</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">H</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob50">哈弗</a> 
+	<a href="/beijing/buycar/list-ob51">海马</a> 
+	<a href="/beijing/buycar/list-ob52">华泰</a> 
+	<a href="/beijing/buycar/list-ob53">红旗</a> 
+	<a href="/beijing/buycar/list-ob54">海马商用车</a> 
+	<a href="/beijing/buycar/list-ob55">黄海</a> 
+	<a href="/beijing/buycar/list-ob56">哈飞</a> 
+	<a href="/beijing/buycar/list-ob57">海格</a> 
+	<a href="/beijing/buycar/list-ob58">恒天汽车</a> 
+	<a href="/beijing/buycar/list-ob59">汇众</a> 
+	<a href="/beijing/buycar/list-ob145">悍马</a> 
+	<a href="/beijing/buycar/list-ob146">华普</a> 
+	<a href="/beijing/buycar/list-ob147">华翔富奇</a> 
+	<a href="/beijing/buycar/list-ob160">华颂</a> 
+	<a href="/beijing/buycar/list-ob173">华泰新能源</a> 
+	<a href="/beijing/buycar/list-ob495">汉腾</a> 
+	<a href="/beijing/buycar/list-ob560">华骐</a> 
+	<a href="/beijing/buycar/list-ob618">红星汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">J</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob60">江淮</a> 
+	<a href="/beijing/buycar/list-ob61">Jeep</a> 
+	<a href="/beijing/buycar/list-ob62">吉利全球鹰</a> 
+	<a href="/beijing/buycar/list-ob63">吉利帝豪</a> 
+	<a href="/beijing/buycar/list-ob64">捷豹</a> 
+	<a href="/beijing/buycar/list-ob65">吉利英伦</a> 
+	<a href="/beijing/buycar/list-ob66">江铃</a> 
+	<a href="/beijing/buycar/list-ob67">金杯</a> 
+	<a href="/beijing/buycar/list-ob68">江南</a> 
+	<a href="/beijing/buycar/list-ob69">金龙联合</a> 
+	<a href="/beijing/buycar/list-ob70">九龙</a> 
+	<a href="/beijing/buycar/list-ob71">金旅客车</a> 
+	<a href="/beijing/buycar/list-ob72">俊风</a> 
+	<a href="/beijing/buycar/list-ob143">吉利</a> 
+	<a href="/beijing/buycar/list-ob542">江铃集团新能源</a> 
+	<a href="/beijing/buycar/list-ob572">君马汽车</a> 
+	<a href="/beijing/buycar/list-ob634">捷途汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">K</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob73">凯迪拉克</a> 
+	<a href="/beijing/buycar/list-ob74">克莱斯勒</a> 
+	<a href="/beijing/buycar/list-ob75">开瑞</a> 
+	<a href="/beijing/buycar/list-ob76">科尼塞克</a> 
+	<a href="/beijing/buycar/list-ob77">卡尔森</a> 
+	<a href="/beijing/buycar/list-ob157">凯翼</a> 
+	<a href="/beijing/buycar/list-ob158">卡威</a> 
+	<a href="/beijing/buycar/list-ob546">康迪全球鹰</a> 
+	<a href="/beijing/buycar/list-ob562">卡升</a> 
+	</div> 
+	</div> 
+	</div> 
+	<div class="brandleft"> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">L</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob78">铃木</a> 
+	<a href="/beijing/buycar/list-ob79">路虎</a> 
+	<a href="/beijing/buycar/list-ob80">雷克萨斯</a> 
+	<a href="/beijing/buycar/list-ob81">力帆</a> 
+	<a href="/beijing/buycar/list-ob82">兰博基尼</a> 
+	<a href="/beijing/buycar/list-ob83">陆风</a> 
+	<a href="/beijing/buycar/list-ob84">雷诺</a> 
+	<a href="/beijing/buycar/list-ob85">猎豹汽车</a> 
+	<a href="/beijing/buycar/list-ob86">劳斯莱斯</a> 
+	<a href="/beijing/buycar/list-ob87">林肯</a> 
+	<a href="/beijing/buycar/list-ob88">莲花</a> 
+	<a href="/beijing/buycar/list-ob89">理念</a> 
+	<a href="/beijing/buycar/list-ob90">路特斯</a> 
+	<a href="/beijing/buycar/list-ob91">蓝海房车</a> 
+	<a href="/beijing/buycar/list-ob153">罗孚</a> 
+	<a href="/beijing/buycar/list-ob561">领克</a> 
+	<a href="/beijing/buycar/list-ob588">拉达LADA</a> 
+	<a href="/beijing/buycar/list-ob619">陆地方舟</a> 
+	<a href="/beijing/buycar/list-ob661">Lorinser</a> 
+	<a href="/beijing/buycar/list-ob682">领途汽车</a> 
+	<a href="/beijing/buycar/list-ob712">罗夫哈特</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">M</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob92">马自达</a> 
+	<a href="/beijing/buycar/list-ob93">MG</a> 
+	<a href="/beijing/buycar/list-ob94">MINI</a> 
+	<a href="/beijing/buycar/list-ob95">迈巴赫</a> 
+	<a href="/beijing/buycar/list-ob96">玛莎拉蒂</a> 
+	<a href="/beijing/buycar/list-ob97">迈凯伦</a> 
+	<a href="/beijing/buycar/list-ob98">摩根</a> 
+	<a href="/beijing/buycar/list-ob99">美亚</a> 
+	<a href="/beijing/buycar/list-ob558">明君汽车</a> 
+	<a href="/beijing/buycar/list-ob641">迈迪汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">N</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob100">纳智捷</a> 
+	<a href="/beijing/buycar/list-ob713">哪吒汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">O</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob101">讴歌</a> 
+	<a href="/beijing/buycar/list-ob102">欧宝</a> 
+	<a href="/beijing/buycar/list-ob103">欧朗</a> 
+	<a href="/beijing/buycar/list-ob635">欧拉</a> 
+	<a href="/beijing/buycar/list-ob637">欧尚汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">Others</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob564">鑫源</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">Q</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob104">起亚</a> 
+	<a href="/beijing/buycar/list-ob105">奇瑞</a> 
+	<a href="/beijing/buycar/list-ob106">启辰</a> 
+	<a href="/beijing/buycar/list-ob107">庆铃</a> 
+	<a href="/beijing/buycar/list-ob624">乔治·巴顿</a> 
+	<a href="/beijing/buycar/list-ob632">前途汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">R</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob108">日产</a> 
+	<a href="/beijing/buycar/list-ob109">荣威</a> 
+	<a href="/beijing/buycar/list-ob110">瑞麒</a> 
+	<a href="/beijing/buycar/list-ob570">如虎</a> 
+	<a href="/beijing/buycar/list-ob631">瑞驰新能源</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">S</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob111">三菱</a> 
+	<a href="/beijing/buycar/list-ob112">斯柯达</a> 
+	<a href="/beijing/buycar/list-ob113">斯巴鲁</a> 
+	<a href="/beijing/buycar/list-ob114">双龙</a> 
+	<a href="/beijing/buycar/list-ob116">Smart</a> 
+	<a href="/beijing/buycar/list-ob117">双环</a> 
+	<a href="/beijing/buycar/list-ob118">世爵</a> 
+	<a href="/beijing/buycar/list-ob149">萨博</a> 
+	<a href="/beijing/buycar/list-ob169">思铭</a> 
+	<a href="/beijing/buycar/list-ob498">斯威</a> 
+	<a href="/beijing/buycar/list-ob501">陕汽通家</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">T</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob119">泰赫雅特</a> 
+	<a href="/beijing/buycar/list-ob120">TESLA</a> 
+	<a href="/beijing/buycar/list-ob150">天马</a> 
+	<a href="/beijing/buycar/list-ob166">腾势</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">W</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob121">五菱</a> 
+	<a href="/beijing/buycar/list-ob122">沃尔沃</a> 
+	<a href="/beijing/buycar/list-ob123">威麟</a> 
+	<a href="/beijing/buycar/list-ob124">威兹曼</a> 
+	<a href="/beijing/buycar/list-ob163">五十铃</a> 
+	<a href="/beijing/buycar/list-ob544">WEY</a> 
+	<a href="/beijing/buycar/list-ob571">蔚来</a> 
+	<a href="/beijing/buycar/list-ob617">威马汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">X</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob125">现代</a> 
+	<a href="/beijing/buycar/list-ob126">雪佛兰</a> 
+	<a href="/beijing/buycar/list-ob127">雪铁龙</a> 
+	<a href="/beijing/buycar/list-ob128">西雅特</a> 
+	<a href="/beijing/buycar/list-ob129">星客特</a> 
+	<a href="/beijing/buycar/list-ob130">新凯</a> 
+	<a href="/beijing/buycar/list-ob148">新雅途</a> 
+	<a href="/beijing/buycar/list-ob151">新大地</a> 
+	<a href="/beijing/buycar/list-ob155">夏利</a> 
+	<a href="/beijing/buycar/list-ob638">新特汽车</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">Y</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob131">一汽</a> 
+	<a href="/beijing/buycar/list-ob132">英菲尼迪</a> 
+	<a href="/beijing/buycar/list-ob133">野马汽车</a> 
+	<a href="/beijing/buycar/list-ob134">永源</a> 
+	<a href="/beijing/buycar/list-ob135">依维柯</a> 
+	<a href="/beijing/buycar/list-ob136">扬州亚星客车</a> 
+	<a href="/beijing/buycar/list-ob159">英致</a> 
+	<a href="/beijing/buycar/list-ob547">御捷新能源</a> 
+	<a href="/beijing/buycar/list-ob563">裕路</a> 
+	<a href="/beijing/buycar/list-ob565">云度新能源</a> 
+	<a href="/beijing/buycar/list-ob568">云雀</a> 
+	<a href="/beijing/buycar/list-ob615">一汽红塔</a> 
+	</div> 
+	</div> 
+	<div class="branddlist clearfix"> 
+	<div class="sign">Z</div> 
+	<div class="brand"> 
+	<a href="/beijing/buycar/list-ob137">中华</a> 
+	<a href="/beijing/buycar/list-ob138">众泰</a> 
+	<a href="/beijing/buycar/list-ob139">中兴</a> 
+	<a href="/beijing/buycar/list-ob140">中欧</a> 
+	<a href="/beijing/buycar/list-ob141">中通客车</a> 
+	<a href="/beijing/buycar/list-ob152">中客华北</a> 
+	<a href="/beijing/buycar/list-ob154">中顺</a> 
+	<a href="/beijing/buycar/list-ob168">知豆</a> 
+	<a href="/beijing/buycar/list-ob569">之诺</a> 
+	</div> 
+	</div> 
+	</div> 
+	</div> 
+	</div> 
+	</div> 
+	</div> 
+	<ul class="layui-clear"> 
+	<li><a href="/beijing/buycar/list-ob1"><img src="/upload/brand/large/b1.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob1">奥迪</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob6"><img src="/upload/brand/large/b6.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob6">别克</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob7"><img src="/upload/brand/large/b7.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob7">宝马</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob8"><img src="/upload/brand/large/b8.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob8">比亚迪</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob9"><img src="/upload/brand/large/b9.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob9">奔驰</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob10"><img src="/upload/brand/large/b10.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob10">标致</a></p></li> 
+	<li><a href="/beijing/buycar/list-ob11"><img src="/upload/brand/large/b11.jpg" width="40" style="margin-top:15px;"></a><p style="text-align:center;"><a href="/beijing/buycar/list-ob11">保时捷</a></p></li> 
+	</ul> 
+	</div> 
+	</div> 
+	<div class="left-search-box-item rightborder" style="width:30%"> 
+	<div class="left-search-subbox"> 
+	<div class="title">级别</div> 
+<ul class="layui-clear">
+<li><a href="/beijing/buycar/list-oj2">小型车</a></li>
+<li><a href="/beijing/buycar/list-oj4">中型车</a></li>
+<li><a href="/beijing/buycar/list-oj5">中大型车</a></li>
+<li><a href="/beijing/buycar/list-oj1">微型车</a></li>
+<li><a href="/beijing/buycar/list-oj6">豪华车</a></li>
+<li><a href="/beijing/buycar/list-oj3">紧凑型车</a></li>
+<li><a href="/beijing/buycar/list-oj7">MPV</a></li>
+<li><a href="/beijing/buycar/list-oj8">SUV</a></li>
+<li><a href="/beijing/buycar/list-oj9">跑车</a></li>
+<li><a href="/beijing/buycar/list-oj38">皮卡</a></li>
+<li><a href="/beijing/buycar/list-oj39">面包车</a></li>
+</ul>
+</div>
+</div>
+<div class="left-search-box-item"  style="width:25%">
+<div class="left-search-subbox">
+<div class="title">价格</div>
+<ul>
+<li><a href="/beijing/buycar/list-op1">3万以下</a></li>
+<li><a href="/beijing/buycar/list-op2">3-5万</a></li>
+<li><a href="/beijing/buycar/list-op3">5-8万</a></li>
+<li><a href="/beijing/buycar/list-op4">8-10万</a></li>
+<li><a href="/beijing/buycar/list-op5">10-20万</a></li>
+<li><a href="/beijing/buycar/list-op6">20-30万</a></li>
+<li><a href="/beijing/buycar/list-op7">30万以上</a></li>
+</ul>
+</div>
+</div>
+</div>
+		</div>
+	</div>
+
+<div class="layui-container">
+<div class="layui-row cartypebox layui-col-space20">
+<div class="layui-col-md4">
+<a href="/buycar/list-oj8" class="cartype car1"><p>城市SUV</p><p class="subtitle">家庭实用之选</p><div class="img"><img src="/templates/mobile/orange/static/img/car1.png" width="160"></div></a>
+</div>
+<div class="layui-col-md4">
+<a href="/buycar/list-op2" class="cartype car2"><p>练手车</p><p class="subtitle">碰碰不心疼</p><div class="img"><img src="/templates/mobile/orange/static/img/car2.png" width="160"></div></a>
+</div>
+<div class="layui-col-md4">
+<a href="/buycar/list-oa2ok1" class="cartype car3"><p>准新车</p><p class="subtitle">3年1万公里内</p><div class="img"><img src="/templates/mobile/orange/static/img/car3.png" width="160"></div></a>
+</div>
+</div>
+</div>
+<div class="layui-container">
+<div class="index-box">
+<div class="title">最新上架</div>
+<div class="layui-row layui-col-space30">
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/198" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203940_571720_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/198" class="showmore">查看详情</a>
+<h4><a href="/cars/198" target="_blank">沃尔沃S60L 2015款 沃尔沃S60L 2.0T T5 智驭版</a></h4>
+<p class="carinfo">2014-05 上牌 / 4.34万公里</p>
+<p class="carprice">14.10万</p>
+<p class="carinfo">新车指导价：<span class="hl">34.09万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/197" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203934_925970_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/197" class="showmore">查看详情</a>
+<h4><a href="/cars/197" target="_blank">大众 辉昂 2018款 辉昂 480 V6 四驱旗舰版</a></h4>
+<p class="carinfo">2009-09 上牌 / 9.50万公里</p>
+<p class="carprice">3.98万</p>
+<p class="carinfo">新车指导价：<span class="hl">55.90万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/196" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203930_861430_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/196" class="showmore">查看详情</a>
+<h4><a href="/cars/196" target="_blank">英菲尼迪Q50(进口) 2014款 英菲尼迪Q50(进口) 3.7L 豪华版</a></h4>
+<p class="carinfo">2014-07 上牌 / 5.40万公里</p>
+<p class="carprice">22.90万</p>
+<p class="carinfo">新车指导价：<span class="hl">41.98万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/195" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203926_831600_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/195" class="showmore">查看详情</a>
+<h4><a href="/cars/195" target="_blank">日产 骐达 2011款 骐达 1.6L XE CVT 舒适版</a></h4>
+<p class="carinfo">2011-08 上牌 / 5.00万公里</p>
+<p class="carprice">6.30万</p>
+<p class="carinfo">新车指导价：<span class="hl">11.53万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/194" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203922_136880_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/194" class="showmore">查看详情</a>
+<h4><a href="/cars/194" target="_blank">丰田 兰德酷路泽 2016款 兰德酷路泽 4.0L 手自一体 GX-R</a></h4>
+<p class="carinfo">2018-03 上牌 / 0.80万公里</p>
+<p class="carprice">66.80万</p>
+<p class="carinfo">新车指导价：<span class="hl">77.10万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/193" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203919_749530_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/193" class="showmore">查看详情</a>
+<h4><a href="/cars/193" target="_blank">现代 悦动 2011款 悦动 1.6L GL 自动舒适型</a></h4>
+<p class="carinfo">2011-12 上牌 / 7.65万公里</p>
+<p class="carprice">4.20万</p>
+<p class="carinfo">新车指导价：<span class="hl">10.98万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/192" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203914_338700_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/192" class="showmore">查看详情</a>
+<h4><a href="/cars/192" target="_blank">长安轿车 逸动 2015款 逸动 1.6L 手动豪华型</a></h4>
+<p class="carinfo">2016-04 上牌 / 4.38万公里</p>
+<p class="carprice">4.80万</p>
+<p class="carinfo">新车指导价：<span class="hl">7.99万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/191" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202203908_595400_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/191" class="showmore">查看详情</a>
+<h4><a href="/cars/191" target="_blank">奔驰CLA级(进口) 2014款 奔驰CLA级(进口) CLA260 4MATIC</a></h4>
+<p class="carinfo">2014-07 上牌 / 4.00万公里</p>
+<p class="carprice">23.30万</p>
+<p class="carinfo">新车指导价：<span class="hl">37.80万</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<a class="morecars mt20" href="/buycar/">查看更多车源</a>
+</div>
+<div class="layui-container">
+<div class="index-box">
+<div class="title">推荐车源</div>
+<div class="layui-row layui-col-space30">
+<div class="layui-col-md3">
+</div>
+<div class="layui-col-md3">
+
+</div>
+<div class="layui-col-md3">
+
+</div>
+<div class="layui-col-md3">
+
+</div>
+<div class="layui-col-md3">
+
+</div>
+<div class="layui-col-md3">
+<div class="carlist">
+<div class="img">
+<div class="isreport"></div>							<a href="/cars/134" target="_blank"><img src="https://ershouche.simcms.net/upload/image/20181202/20181202175001_355620_small.jpg" class="lazy"/></a>
+</div>
+<div class="caption">
+<a href="/cars/134" class="showmore">查看详情</a>
+<h4><a href="/cars/134" target="_blank">东南 V3菱悦 2008款 V3菱悦 GLXi MT 豪华版</a></h4>
+<p class="carinfo">2009-08 上牌 / 9.04万公里</p>
+<p class="carprice">1.65万</p>
+<p class="carinfo">新车指导价：<span class="hl">6.68万</span></p>
+</div>
+</div>
+</div>
+<div class="layui-col-md3">
+
+</div>
+<div class="layui-col-md3">
+
+</div>
+</div>
+</div>
+<a class="morecars mt20" href="/buycar/">查看更多车源</a>
+</div>
+<div class="gray-box">
+<div class="layui-container">
+<div class="newsbox">
+<div class="title">购车宝典</div>
+<div class="layui-row layui-col-space30">
+<div class="layui-col-md4">
+<div class="indexnewslist">
+<a href="/news/239" target="_blank">
+<div class="img"><img src="/upload/image/20181205/20181205110553_12952.jpg"></div>
+<div class="box">
+<h3 class="newstitle">车况太复杂看不懂？想挑好车这么做</h3>
+<div class="newsinfo">众所周知，二手车的车况可以说是良莠不齐，特别是对于小白来说，最怕的就是买到事故车问题车，每一台二手车动辄上千个零件，车况这么复杂小白肯定不知道如何判断车况的好坏。那么，怎么才能挑选一辆车</div>
+</div>
+</a>
+</div>
+</div>
+<div class="layui-col-md4">
+<div class="indexnewslist">
+<a href="/news/238" target="_blank">
+<div class="img"><img src="/upload/image/20181205/20181205104455_81763.jpg"></div>
+<div class="box">
+<h3 class="newstitle">挑选二手车 别忘了路试</h3>
+<div class="newsinfo">想要知道一辆二手车好开不好开，只凭敲敲打打听一听声音根本就没法准确判断车况好坏，最直接最有效的办法就是开车上路试一把，刹车软不软，有没有异响，车况好坏一试就知道了。那么，二手车上路要</div>
+</div>
+</a>
+</div>
+</div>
+<div class="layui-col-md4">
+<div class="indexnewslist">
+<a href="/news/224" target="_blank">
+<div class="img"><img src="/upload/image/20181205/20181205105146_45148.png"></div>
+<div class="box">
+<h3 class="newstitle">老司机看玻璃辨车况 别再傻傻纠结里程了！</h3>
+<div class="newsinfo">玻璃上的数字编码包含哪些信息？我们在检查二手车车况的时候，在车身玻璃的左下角或者右下角很容易就能发现一串编码，一般都会由一些数字和图案组成。通过这串数字我们可以初步判断出来这辆车的每一块玻璃大概是</div>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="layui-container">
+<div class="index-box">
+<div class="title">友情链接</div>
+<div class="flinklist">
+{foreach name="$link" item="vo"}
+<a href="{$vo.link_src}}" target="_blank">{$vo.link_name}</a>
+{/foreach}			
+</div>
+</div>
+</div>
+<div class="service-box">
+<div class="layui-container layui-clear">
+<div class="service-box-item first">
+<h3>售后服务电话</h3>
+<ul>
+<li><span class="tel">010-58480317</span></li>						
+<li>phpstat@phpstat.net</li>
+</ul>
+</div>
+<div class="service-box-item">
+<h3>买车宝典</h3>
+<ul>
+<li><a href="/news/1/1">车况鉴别</a></li>
+<li><a href="/news/2/1">选车技巧</a></li>
+<li><a href="/news/21/1">过户缴费</a></li>
+</ul>
+</div>
+<div class="service-box-item">
+<h3>客服中心</h3>
+<ul>
+<li><a href="/about/3">网站合作</a></li>
+<li><a href="/about/4">联系我们</a></li>
+</ul>
+</div>
+<div class="service-box-item">
+<h3>意见反馈</h3>
+<ul>
+<li><a href="/feedback/">投诉与建议</a></li>
+</ul>
+</div>
+<div class="service-box-item">
+<h3>联系我们</h3>
+<ul>
+<li><a href="/about/1">关于我们</a></li>
+<li><a href="/about/2">人才招聘</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="foot-box mt20">
+<div class="layui-container">
+<p class="copyright">锐车   免费咨询：010-58480317</p>
+<p class="copyright"> Copyright 2018 锐车 版权所有. 锐车</p>
+</div>
+</div>
+</body>
+</html>

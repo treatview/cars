@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加链接</title>
+	<script src="/static/admin/js/jquery1.8.3.min.js"></script>
+	<script src="/static/admin/assets/layui.js"></script>
+	<link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+	
+</head>
+<body>
+	<div class="layui-content">
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-header">添加链接 &nbsp;&nbsp;&nbsp;<i class="layui-icon" onclick='location.href=location.href'>&#xe666;</i></div>
+                <form class="layui-form layui-card-body" action="" id="form">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">链接网站</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="link_name" placeholder="请输入网站名" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">链接地址</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="link_src" placeholder="请输入链接地址" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">是否显示</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" name="switch"  lay-skin="switch" lay-text="显示|隐藏" checked>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn layui-btn-blue" type="submit">立即提交</button>
+                      <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+                    </div>
+                  </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/admin/assets/layui.all.js"></script>
+    {include file="public/validate"}
+    <script>  	
+       	function layer_close(){
+		  var index = parent.layer.getFrameIndex(window.name);
+		  parent.location.reload();
+		  parent.layer.close(index);
+		}
+    	layui.use('layer',function(){
+			var layer = layui.layer;
+			layer.config({
+	          icon:2,
+	          tips:[2,"#123456"],
+	          time:1000
+	        })
+			$("#form").validate({
+				submitHandler:function(form){
+					var linkname = $("input[name=link_name]").val();
+					var linksrc = $("input[name=link_src]").val();
+		            if(linkname==''){
+		              layer.tips('链接名不能为空','input[name=link_name]');
+		              return false;
+		            }
+		            if(linksrc==''){
+		              layer.tips('链接地址不能为空','input[name=link_src]');
+		              return false;
+		            }     
+		            var checkcatename = 0;
+		            $.ajax({
+		              type:'get',
+		              url:'{:url("admin/link/linkadd",["type"=>"checkcatename"])}',
+		              data:'cate_name='+linkname,
+		              dataType:"json",
+		              async:false,
+		              success:function(res){
+		                if(res.code==0){
+		                  layer.tips(res.msg,'input[name=link_name]');
+		                  checkcatename = 1;
+		                }
+		              }
+		            });
+            		if(checkcatename==1){
+              			return false;
+            		}
+					$(form).ajaxSubmit({
+						type:"post",
+						url:"{:url('admin/Link/linkAdd')}",
+						dataType:'json',
+						success:function(res){
+							//alert(res);
+							if (res.code==1) {
+								layer.msg("添加成功",{icon:1,time:1500},function(index){
+									layer_close();
+								})
+							}else{
+								layer.msg("添加失败",{icon:2,time:1500},function(index){
+									
+								})
+							}
+						}
+					})
+				},
+				errorPlacement:function(error,element){
+					element.parent().next().html(error);
+				}
+			})
+		})
+    </script>
+</body>
+</html>

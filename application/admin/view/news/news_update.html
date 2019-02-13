@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layui.form小例子</title>
+<link rel="stylesheet" href="/static/admin/assets/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="/static/admin/assets/css/view.css">
+  <style type="text/css">
+    .change{margin-top: 20px}
+  </style>
+</head>
+<body>
+  <div class="change"></div>
+<form class="layui-form" action="" id="newsform">
+  <input type="hidden" name="newsid" value="{$data.news_id}">
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择分类</label>
+    <div class="layui-input-inline">
+      <select name="parent_id">
+        <option value="">请选择</option>
+        {foreach $cates as $key=>$vo}
+        <optgroup label="{$vo.cate_name}">
+          {foreach $vo.childs as $k=>$v}
+          <option value="{$v.cate_id}" 
+          {if condition="$v.cate_id == $data.news_cate_id "} selected {else /} 
+          {/if}
+          >{$v.cate_name}</option>
+          {/foreach}
+        </optgroup>
+        {/foreach}
+      </select>
+    </div>
+    <div  class="layui-input-inline sel"></div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">标题</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" value="{$data.news_title}">
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">关键字</label>
+    <div class="layui-input-block">
+      <input type="text" name="keywords" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$data.news_keywords}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">描述</label>
+    <div class="layui-input-block">
+      <input type="text" name="des" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$data.news_des}">
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">作者</label>
+    <div class="layui-input-block">
+      <input type="text" name="author" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$data.news_author}">
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">修改图片</label>
+    <div class="layui-input-inline">
+     <button type="button" class="layui-btn" id="upload">
+      <i class="layui-icon">&#xe67c;</i>上传图片
+  </button>
+    <i class="nul"></i>
+    </div>
+    <div class="layui-form-mid layui-word-aux"></div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">图片预览</label>
+    <div class="layui-input-block imgbox">
+      {foreach name="$data.news_pic|json_decode" item="vo"}
+      <span class="box">
+          <img src="/uploads/{$vo}" width="100px" height="100px">
+          <i class='layui-icon'> &#x1007;</i>
+          <input type='hidden' name='imgs[]' value="{$vo}">
+      </span>
+      {/foreach}
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">文章内容</label>
+    <div class="layui-input-block">
+      <div id="content" >{$data.news_content}</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否推荐</label>
+    <div class="layui-input-block">
+      <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF" 
+        {if condition="$data.news_ifcommand == 1"}
+        checked="checked"
+        {/if} 
+      value="1">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+  <script src="/static/admin/assets/layui.all.js"></script>
+  <script src="/static/admin/js/layerwin.js"></script>
+  <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="/static/admin/js/jquery.form.js"></script>
+  {include file="public/trumbowyg"}
+<script>
+  setEditor($("#content"));
+  layui.use('upload',function(){
+    var upload = layui.upload;
+    var layer = layui.layer;
+    upload.render({
+      elem:'#upload',
+      url:"{:url('admin/News/newsImg')}",
+      field:'img',
+      done:function(res,index,upload){
+        if(res.code == 1){
+          var str = "<span class='box'>";
+          str += "<img width='100px' height='100px' src='"+"/uploads/"+res.pathinfo+"'>";
+          str += "<i class='layui-icon'>&#x1007;</i>";
+          str += "<input type='hidden' name='imgs[]' value='"+res.pathinfo+"'>";
+          str += "</span>";
+          $(".imgbox").append(str);
+        }
+      }
+    })
+    });
+    //删除图片
+    $(".box i").live("click",function(){
+      //页面中，该图片消失
+      var imginfo = $(this).prev().attr('src');
+      var obj = $(this).parent();
+      //服务器中，相应的图片删除
+      $.ajax({
+        type:'get',
+        url:"{:url('admin/News/delImg')}",
+        data:{imginfo:imginfo},
+        dataType:"json",
+        success:function(res){
+          if(res.code==1){
+            obj.remove();
+          }
+        }
+      })
+    })    
+    //验证 用户名，密码，上传图不为空
+    $("#newsform").validate({
+      submitHandler:function(form){
+        var img = $(".imgbox").children("span").length;
+        if(img==""){
+          layer.tips("图片不能为空",".nul",{time:1500,
+            tips:[2,'#F13D3D']});
+          return false;
+        }
+        //表单提交
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('admin/News/newsUpdate')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+</script>
+</body>
+</html>

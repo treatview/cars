@@ -1,0 +1,71 @@
+<div class="layui-header">
+	<ul class="layui-nav layui-layout-left">
+		<li class="layui-nav-item layadmin-flexible" lay-unselect="">
+			<a href="javascript:;" id="flexible" title="侧边伸缩">
+			<i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item layui-hide-xs" lay-unselect="">
+			<a href="/" target="_blank" title="前台">
+			<i class="layui-icon layui-icon-website"></i>
+			</a>
+		</li>
+		<li class="layui-nav-item" lay-unselect="">
+			<a href="javascript:;" id="refresh" title="刷新">
+			<i class="layui-icon layui-icon-refresh-3" onclick='location.href=location.href'></i>
+			</a>
+		</li>
+		<span class="layui-nav-bar" style="width: 0px; left: 142px; opacity: 0; top: 48px;"></span>
+	</ul>
+	<ul class="layui-nav layui-layout-right">
+	  <li class="layui-nav-item" style="margin-right:10px;">
+		<a href="javascript:;">
+		   <i class="layui-icon" style="font-size:16px; color: #aaa;">&#xe612;</i>
+           15261011679
+		</a>
+		<dl class="layui-nav-child">
+		  <dd><a href="" class="logout">退出</a></dd>
+		</dl>
+	  </li>
+	</ul>
+</div>		
+<div class="layui-side layui-side-menu">
+	<div class="layui-side-scroll">
+		<div class="layui-logo">
+            会员中心
+        </div>
+		<ul class="layui-nav layui-nav-tree">
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">首页</a>
+				<dl class="layui-nav-child">
+					<dd class="layui-this"><a href="{:url('home/member/index')}">会员首页</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是买家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="">我的预约</a></dd>
+					<dd ><a href="">我的砍价</a></dd>
+					<dd ><a href="">我的贷款</a></dd>
+					<dd ><a href="user.p">我的收藏</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">我是卖家</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="">车源管理</a></dd>
+					<dd ><a href="">预约管理</a></dd>
+					<dd ><a href="">砍价管理</a></dd>
+					<dd ><a href="">贷款管理</a></dd>
+				</dl>
+			</li>
+			<li class="layui-nav-item layui-nav-itemed">
+				<a class="" href="javascript:;">用户中心</a>
+				<dl class="layui-nav-child">
+					<dd ><a href="{:url('home/Ucenter/basefile')}">基本资料</a></dd>
+					<dd ><a href="{:url('home/Ucenter/password')}">修改密码</a></dd>
+				</dl>
+			</li>
+		</ul>
+    </div>
+</div>	

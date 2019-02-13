@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>认证页面</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+ 
+                      <table lay-filter="catelist" >
+                        <thead>
+                          <tr>
+                            <th lay-data="{field:'user_id',width:60,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'phone',width:160,align:'center'}">手机号</th>
+                            <th lay-data="{field:'status',templet:'#tool',width:120,align:'center'}">状态</th>
+                            <th lay-data="{width:160,toolbar:'#toolbar',align:'center','fixed':'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {foreach name="list" item="vo"}
+                          <tr>
+                            <td align='center'>{$vo.user_id}</td>
+                            <td align='center'>{$vo.phone}</td>
+                            <td align='center'>
+                              {$vo.status}
+                            </td>
+                            <td align='center'></td>
+                          </tr>
+                        {/foreach}
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/jq/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script type="text/html" id="toolbar">
+      {{#  if(d.status>0){ }}
+        <a lay-event="detail" class="layui-btn layui-btn-xs layui-btn-warm" >查看</a>
+      {{#  } }}
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script type="text/html" id="tool">
+      {{#  if(d.status==0){ }}
+        未认证
+      {{#  }if(d.status==1){ }}
+        认证通过
+      {{#  }if(d.status==2){ }}
+        认证不通过
+      {{#  }if(d.status==3){ }}
+        未处理
+      {{#  } }}
+    </script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    width:500,
+  });
+
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var id = obj.data;
+    console.log(obj);
+    if(evt=="del"){
+      layer.confirm('确定删除行么', function(index){
+	    $.ajax({
+	      	type:"get",
+	      	url:"{:url('admin/Authenti/authDel')}",
+	      	data:{id:id.auth_id},
+	      	dataType: 'json',
+	      	success:function(res){
+	      		if(res.code==0){
+	              layer.msg(res.msg,{icon:2,time:1500});
+	            }else{
+	              layer.msg(res.msg,{icon:1,time:1500},function(){
+	                obj.del();
+	              })
+	            }
+	      	}
+	    });
+	      	layer.close(index);
+	  });
+    }else if(evt=="detail"){
+      layer.open({
+        type:2,
+        title:"查看信息",
+        skin: 'layui-layer-rim', //加上边框
+        area: ['800px', '600px'], //宽高
+        content:"{:url('admin/Authenti/authDo')}?newsid="+id.user_id//调到新增页面
+      });
+    }
+  });
+
+    </script>
+</body>
+</html>

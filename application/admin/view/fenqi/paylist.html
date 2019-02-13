@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">新闻</a>
+                  <a><cite>新闻列表</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增</button>
+                      <table lay-filter="paylist" >
+                        {literal}
+                        <thead>
+                          <tr>
+                            <th lay-data="{field:'tid',width:50,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'fname',width:100}">名称</th>
+                            <th lay-data="{field:'fvalue',width:100}">值</th>
+                            <th lay-data="{field:'tname',width:80}">期数</th>
+                            <th lay-data="{field:'int',width:100}">利率</th>
+                            <th lay-data="{field:'ifshow',width:100,templet:'#ifshow',align:'center'}">是否显示</th>
+                            <th lay-data="{width:200,toolbar:'#toolbar',align:'center','fixed':'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach $cates as $key=>$vo}
+                          <tr>
+                            <td align='center'>{$vo.tid}</td>
+                            <td align='center'>{$vo.fname}</td>
+                            <td align='center'>{$vo.fvalue}</td>
+                            <td align='center'>{$vo.tname}</td>
+                            <td align='center'>{$vo.int}</td>
+                            <td align='center'>{$vo.ifshow}</td>
+                          </tr>
+                          {/foreach}
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script src="/static/admin/js/layerwin.js"></script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏" value='1' {{ d.ifshow==1?'checked':''}} lay-event='switch' lay-filter='ifshow' dataid="{{ d.tid }}">
+    </script>
+
+    <script type="text/html" id="toolbar">
+      <a lay-event="edit" class="layui-btn layui-btn-xs layui-btn-warm">编辑</a>
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+    var element = layui.element;
+    var table = layui.table;
+    var form = layui.form;
+    table.init('paylist',{
+      width:800
+    });
+
+    table.on("tool(paylist)",function(obj){
+    var evt = obj.event;
+    var tid = obj.data.tid;
+    // console.log(obj);
+        if(evt=="del"){
+          //执行删除操作
+          layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+            $.ajax({
+              type:'get',
+              url:'{:url("admin/fenqi/paydel")}',
+              data:"tid="+tid,
+              dataType:"json",
+              success:function(res){
+                if(res.code==0){
+                  layer.msg(res.msg,{icon:2,time:1500});
+                }else{
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                    obj.del();
+                  })
+                }
+              }
+            })
+          })
+        }else if(evt=="edit"){
+          // 执行编辑操作
+          layer_show('分类修改','{:url("admin/fenqi/payupdate")}?tid='+tid,"800","400");
+        }
+      })
+
+      form.on('switch(ifshow)',function(obj){
+        var tid = obj.elem.getAttribute('dataid');
+        $.ajax({
+          type:"get",
+          url:"{:url('admin/fenqi/updateifshow')}",
+          data:"tid="+tid,
+          dataType:'json',
+          success:function(res){
+            if(res.code==1){
+              layer.msg(res.msg,{icon:1,time:1000})
+            }
+          }
+        })
+      })
+
+       $(".add").click(function(){
+          // location.href='{:url('admin/News/cateAdd')}'
+          layer_show('添加分期方式','{:url("admin/fenqi/payadd")}',"800","400");
+        })
+    </script>
+  </body>
+  </html>

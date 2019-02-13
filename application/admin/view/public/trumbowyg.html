@@ -1,0 +1,41 @@
+<script src="/static/admin/trumbowyg/dist/trumbowyg.js"></script>
+<script src="/static/admin/trumbowyg/dist/langs/zh_cn.js"></script>
+<script src="/static/admin/trumbowyg/dist/plugins/base64/trumbowyg.base64.js"></script>
+<script src="/static/admin/trumbowyg/dist/plugins/upload/trumbowyg.upload.js"></script>
+<script>
+// 编辑器css样式添加到head内
+(function(){
+	$("head").append('<link rel="stylesheet" href="/static/admin/trumbowyg/dist/ui/trumbowyg.css">');
+})()
+function setEditor(obj){
+	obj.trumbowyg({
+	    lang:"zh_cn",
+	    btnsDef:{
+	      image:{
+	        dropdown:['insertImage','base64','upload'],
+	        ico:"insertImage",
+	        title:'添加图片'
+	      }
+	    },
+	    btns:[
+	        ['viewHTML'],
+	        ['formatting'],
+	        ['strong', 'em'],
+	        ['superscript', 'subscript'],
+	        ['link'],
+	        ['image'],
+	        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+	        ['unorderedList', 'orderedList'],
+	        ['horizontalRule'],
+	        ['removeformat']
+	    ],
+	    plugins:{
+	    	upload:{
+	    		serverPath:"{:url('admin/Upload/editorImg')}",
+	    		fileFieldName:'img',
+	    		urlPropertyName:'editorimg'
+	    	}
+	    }
+	  });
+}
+</script>

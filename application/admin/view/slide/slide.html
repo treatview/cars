@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>新闻页面</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">新闻</a>
+                  <a><cite>新闻列表</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>添加图片</button> 
+                      <table lay-filter="catelist" >
+                        <thead>
+                          <tr>
+                            <th lay-data="{field:'slide_id',width:60,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'slide_pic',width:160,align:'center',style:'height:20px'}">图片</th>
+                            <th lay-data="{field:'slide_desc',width:220,align:'center'}">图片介绍</th>
+                            <th lay-data="{field:'slide_ifshow',templet:'#ifshow',width:100,align:'center'}">是否显示</th>
+                            <th lay-data="{width:160,toolbar:'#toolbar',align:'center','fixed':'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {foreach $list as $key=>$vo}
+                          <tr>
+                            <td align='center'>{$vo.slide_id}</td>
+                            <td align='center'>
+                            	<img src="{$vo.slide_pic}" width="60px" height="80px" alt="">
+                        	</td>
+                        	<td align='center'>{$vo.slide_desc}</td>
+                        	<td align='center'>{$vo.slide_ifshow}</td>
+                            <td align='center'></td>
+                          </tr>
+                        {/foreach}
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏" value='1' {{ d.slide_ifshow==1?'checked':''}} lay-event='switch' lay-filter='ifshow' dataid="{{ d.slide_id }}">
+    </script>
+    <script type="text/html" id="toolbar">
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    width:700,
+  });
+
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var id = obj.data;
+    //console.log(obj);
+    if(evt=="del"){
+      layer.confirm('确定删除行么', function(index){
+	    $.ajax({
+	      	type:"get",
+	      	url:"{:url('admin/Slide/del')}",
+	      	data:{id:id.slide_id},
+	      	dataType: 'json',
+	      	success:function(res){
+	      		if(res.code==0){
+	              layer.msg(res.msg,{icon:2,time:1500});
+	            }else{
+	              layer.msg(res.msg,{icon:1,time:1500},function(){
+	                obj.del();
+	              })
+	            }
+	      	}
+	    });
+	      	layer.close(index);
+	  });
+    }
+  })
+
+  form.on('switch(ifshow)',function(obj){
+    //console.log(obj.elem.getAttribute('dataid'));
+    var cateid = obj.elem.getAttribute('dataid');
+    $.ajax({
+      type:"get",
+      url:"{:url('admin/Slide/updateif')}",
+      data:"cateid="+cateid,
+      dataType:'json',
+      success:function(res){
+        if(res.code==1){
+          layer.msg(res.msg,{icon:1,time:1000})
+        }
+      }
+    })
+  })
+
+  $(".add").click(function(){
+    layer.open({
+        type:2,
+        title:"添加图片",
+        skin: 'layui-layer-rim', //加上边框
+		area: ['700px', '600px'], //宽高
+		content:'{:url("admin/Slide/slideAdd")}'  //调到新增页面
+      });
+  })
+    </script>
+</body>
+</html>

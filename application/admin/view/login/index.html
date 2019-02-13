@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/login.css">
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="login-wrap">
+    <div class="login-container">
+        <form class="login-form" id="loginform">
+            <div class="input-group">
+                <input type="text" name="user" id="username" class="input-field">
+                <label for="username" class="input-label ">
+                    <span class="label-title">用户名</span>
+                </label>
+            </div>
+            <div class="input-group">
+                <input type="password" name="pwd" id="password" class="input-field">
+                <label for="password" class="input-label">
+                    <span class="label-title">密码</span>
+                </label>
+            </div>
+            <div class="input-group">
+            <button class="layui-btn layui-btn-normal" lay-submit>登陆</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button type="button" class="layui-btn layui-btn-primary"><a href="">注册</a></button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="/static/admin/assets/layui.js"></script>
+<script src="/static/admin/js/index.js" data-main="login"></script>
+{include file="public/validate"}
+<script >
+layui.use('layer',function(){
+        var layer = layui.layer;
+        layer.config({
+          icon:2,
+          tips:[2,"#123456"],
+          time:1000,
+        })
+        $("#loginform").validate({
+          submitHandler:function(form){
+            var name = $("#username").val();
+            if(name ==''){
+              layer.tips('用户名不能为空',"input[id='username']");
+              return false;
+            }
+            var password = $("#password").val();
+            if(password == ""){
+                layer.tips("密码不能为空","input[id='password']");
+                return false;
+            }
+            $(form).ajaxSubmit({
+              type:"post",
+              url:"{:url('admin/Login/index')}",
+              dataType:'json',
+              success:function(res){
+                if(res.code == 1){
+                  layer.msg(res.msg,{icon:1,time:1500},function(){
+                   location.href="{:url('admin/index/index')}";
+                  })
+                }else{
+                layer.msg(res.msg,{icon:2,time:1500,});
+                }
+              }
+            })
+          
+          }
+        })
+      })
+</script>
+</html>

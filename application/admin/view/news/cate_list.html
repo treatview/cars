@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/admin/assets/css/layui.css">
+    <link rel="stylesheet" href="/static/admin/assets/css/view.css"/>
+    <!-- <link rel="icon" href="/favicon.ico"> -->
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a href="">新闻</a>
+                  <a><cite>新闻列表</cite></a>
+                </span>
+               <!--  <h2 class="title">用户组</h2> -->
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box"> 
+
+                      <button class="layui-btn layui-btn-blue add" style="margin-bottom:15px" ><i class="layui-icon">&#xe654;</i>新增</button> 
+                      <div class="layui-form layui-form-item" style="display:none">
+                        <div class="layui-inline">
+                            <div class="layui-form-mid">用户名:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                              <input type="text" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">邮箱:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                              <input type="text" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid">性别:</div>
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <select name="sex">
+                                    <option value="1">男</option>
+                                    <option value="2">女</option>
+                                </select>     
+                            </div>
+                            <button class="layui-btn layui-btn-blue">查询</button>
+                            <button class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                      </div>
+                      <table lay-filter="catelist" >
+                        {literal}
+                        <thead>
+                          <tr>
+                            <th lay-data="{field:'cate_id',width:80,'sort':true,align:'center'}">ID</th>
+                            <th lay-data="{field:'cate_name',width:200}">分类名称</th>
+                            <th lay-data="{field:'cate_ifshow',width:100,templet:'#ifshow',align:'center'}">状态</th>
+                            <th lay-data="{width:200,toolbar:'#toolbar',align:'center','fixed':'right'}">操作</th>
+                          </tr>
+                        </thead>
+                        {/literal}
+                        <tbody>
+                          {foreach $cates as $key=>$vo}
+                          <tr>
+                            <td align='center'>{$vo.cate_id}</td>
+                            <td align='left'>{$vo.cate_name}</td>
+                            <td align='center'>{$vo.cate_ifshow}</td>
+                            <td align='center'></td>
+                          </tr>
+                            {foreach $vo.childs as $k=>$v}
+                              <tr>
+                              <td align='center'>{$v.cate_id}</td>
+                            
+                              <td align='left'>&nbsp;&nbsp;&nbsp;&nbsp;{eq name='k' value=':count($vo.childs)-1'}└{else/}├{/eq}{$v.cate_name}</td>
+                              <td align='center'>{$v.cate_ifshow}</td>
+                              <td align='center'></td>
+                              </tr>
+                            {/foreach}
+                          {/foreach}
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/admin/js/jquery1.8.3.min.js"></script>
+    <script src="/static/admin/assets/layui.all.js"></script>
+    <script type='text/html' id="ifshow">
+      <input type="checkbox" name="ifshow" lay-skin="switch" lay-text="显示|隐藏" value='1' {{ d.cate_ifshow==1?'checked':''}} lay-event='switch' lay-filter='ifshow' dataid="{{ d.cate_id }}">
+    </script>
+
+    <script type="text/html" id="toolbar">
+      <a lay-event="edit" class="layui-btn layui-btn-xs layui-btn-warm">编辑</a>
+      <a lay-event="del" class="layui-btn layui-btn-xs layui-btn-normal">删除</a>
+    </script>
+    <script>
+      var element = layui.element;
+  var table = layui.table;
+  var form = layui.form;
+  table.init('catelist',{
+    width:580
+  });
+
+  //编辑和删除事件的触发
+  /*
+    2.2.6版本中
+    工具栏事件触发
+    table.on('tool(table标签的lay-filter的值)',function(obj){
+  
+    })
+  */
+  table.on("tool(catelist)",function(obj){
+    var evt = obj.event;
+    var cateid = obj.data.cate_id;
+    if(evt=="del"){
+      layer.confirm('确认删除吗?',{icon:3,title:'删除'},function(index){
+        $.ajax({
+          type:'get',
+          url:'{:url("admin/News/cateDel")}',
+          data:"cateid="+cateid,
+          dataType:"json",
+          success:function(res){
+            if(res.code==0){
+              layer.msg(res.msg,{icon:2,time:1500});
+            }else{
+              layer.msg(res.msg,{icon:1,time:1500},function(){
+                obj.del();
+              })
+            }
+          }
+        })
+      })
+    }else if(evt=="edit"){
+      // 执行编辑操作
+      layer.open({
+      type: 2, 
+      area:['850px','450px'],
+      title:"分类修改",
+      content: '{:url("admin/News/catesUpdate")}?cateid='+cateid, 
+      })
+    }
+  })
+
+  form.on('switch(ifshow)',function(obj){
+    var cateid = obj.elem.getAttribute('dataid');
+    $.ajax({
+      type:"get",
+      url:"{:url('admin/News/updateifshow')}",
+      data:"cateid="+cateid,
+      dataType:'json',
+      success:function(res){
+        if(res.code==1){
+          layer.msg(res.msg,{icon:1,time:1000})
+        }
+      }
+    })
+  })
+
+  $(".add").click(function(){
+  	layer.open({
+	  type: 2, 
+	  area:['850px','450px'],
+	  title:"新增分类",
+	  content: "{:url('admin/News/catesAdd')}", 
+	  })   
+  })
+    </script>
+</body>
+</html>

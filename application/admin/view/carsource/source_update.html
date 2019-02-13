@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>layui.form小例子</title>
+<link rel="stylesheet" href="/static/admin/assets/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="/static/admin/assets/css/view.css">
+  <style type="text/css">
+    .change{margin-top: 20px}
+  </style>
+</head>
+<body>
+  <div class="change"></div>
+<form class="layui-form" action="" id="newsform">
+  <div class="layui-form-item"><label style="padding-left:20px;color:red;">基础信息(必填)</label></div>
+  <div class="layui-form-item">
+    <input type="hidden" name="srid" value="{$data.sr_id}">
+      <label class="layui-form-label">地区</label>
+      <div class="layui-input-inline" id="provbox">
+        <select name="pid" class="layui-input" id="prov" lay-filter="prov" ">
+          <option value=''>请选择省份</option>
+          {foreach $area as $vo}
+          <option value="{$vo.area_id}"
+          {if $vo.area_id == $data.sr_area_id}
+          selected="selected"
+          {/if} 
+          >{$vo.area_name}</option>
+          {/foreach}
+        </select>
+      </div>
+      <div class="layui-input-inline" id="citybox">
+        <select name="cid" class="layui-input" id="city" lay-filter="city" ">
+          <option value=''>请选择</option>
+          {foreach $next as $vo}
+          <option
+          {if $vo.area_id == $data.sr_area_next}
+          selected="selected"
+          {/if} 
+           value="{$vo.area_id}">{$vo.area_name}</option>
+          {/foreach} 
+        </select>
+      </div>
+   </div>   
+  <div class="layui-form-item">
+      <label class="layui-form-label">品牌</label>
+      <div class="layui-input-inline">
+        <select name="brand" id="brand" lay-filter="brand">
+          <option value="0">请选择</option>
+          {foreach $brand as $vo}
+          <option
+          {if $vo.bnd_id == $data.sr_bnd_id}
+          selected="selected"
+          {/if} 
+           value="{$vo.bnd_id}">{$vo.bnd_name}</option>
+          {/foreach} 
+        </select>
+      </div>
+      <div class="layui-input-inline" id="citybox">
+          <select name="series" class="layui-input" id="series" lay-filter="series" >
+            <option value=''>请选择</option>
+            {foreach $series as $vo}
+          <option
+          {if $vo.series_id == $data.sr_series_id}
+          selected="selected"
+          {/if} 
+           value="{$vo.series_id}">{$vo.series_name}</option>
+          {/foreach}
+          </select>
+      </div>
+      <div class="layui-input-inline" id="typebox">
+          <select name="type" class="layui-input" id="type" lay-filter="type" lay-verify="required">
+            <option value=''>请选择</option>
+            {foreach $type as $vo}
+              <option
+              {if $vo.ty_id == $data.sr_ty_id}
+              selected="selected"
+              {/if} 
+               value="{$vo.ty_id}">{$vo.ty_name}</option>
+          {/foreach}
+          </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+      <label class="layui-form-label">级别</label>
+      <div class="layui-input-inline">
+        <select name="level" id="level" lay-filter="level">
+          <option value="0">请选择</option>
+          {foreach $level as $vo} 
+          <option value='{$vo.le_id}'
+          {if $vo.le_id == $data.sr_le_id}
+              selected="selected"
+          {/if} 
+          >{$vo.le_name}</option>
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">上牌日期</label>
+    <div class="layui-input-block">
+      <input type="text" name="date_bord"  placeholder="请填写上牌日期" autocomplete="off" class="layui-input" value="{$data.sr_date_bord}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">行驶里程</label>
+    <div class="layui-input-block">
+      <input type="text" name="kilo"  placeholder="请填写行驶里程" autocomplete="off" class="layui-input" value="{$data.sr_run_kilo}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">排量</label>
+    <div class="layui-input-block">
+      <input type="text" name="out"  placeholder="请填写排量" autocomplete="off" class="layui-input" value="{$data.sr_volume}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+      <label class="layui-form-label">变速箱</label>
+      <div class="layui-input-inline">
+        <select name="transbox" id="transbox" lay-filter="transbox">
+          <option value="0">请选择</option>
+          {foreach $param as $vo}
+          {if $vo.pv_param_id == 6}
+          <option value='{$vo.pv_name}'
+          {if $vo.pv_name == $data.sr_param_id}
+              selected="selected"
+          {/if} 
+          >{$vo.pv_name}</option>
+          {/if}
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+      </div>
+  </div>
+  <div class="layui-form-item"><label style="padding-left:20px;color:red;">报价(必填)</label></div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">报价</label>
+    <div class="layui-input-block">
+      <input type="text" name="price"  placeholder="请填写报价" autocomplete="off" class="layui-input" value="{$data.sr_price}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">过户费</label>
+    <div class="layui-input-block">
+      <input type="radio" name="transfee" title="不包含" checked value="0">
+      <input type="radio" name="transfee" titel="包含" value="1">
+    </div>
+  </div>
+  <div class="layui-form-item"><label style="padding-left:20px;color:red;">分期信息(选填)</label></div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">首付比例</label>
+    <div class="layui-input-block">
+      {foreach $fpay as $vo}
+      {foreach $tpay as $v}
+      <input type="radio" name="firstpay" title="{$vo.fname}{$v.tname}期" value="{$vo.fname}{$v.tname}">
+      {/foreach}
+      {/foreach}
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">车况描述</label>
+    <div class="layui-input-block">
+      <textarea name="car_des"></textarea>
+    </div>
+  </div> 
+  <div class="layui-form-item"><label style="padding-left:20px;color:red;">其他信息(选填)</label></div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">排放标准</label>
+    <div class="layui-input-inline">
+      <select name="output_stand" id="output_stand" lay-filter="output_stand">
+          <option value="0">请选择</option>
+          {foreach $param as $vo}
+          {if $vo.pv_param_id == 5}
+          <option value='{$vo.pv_name}'>{$vo.pv_name}</option>
+          {/if}
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">燃油类型</label>
+    <div class="layui-input-inline">
+      <select name="oil" id="oil" lay-filter="oil">
+          <option value="0">请选择</option>
+          {foreach $param as $vo}
+          {if $vo.pv_param_id == 8}
+          <option value='{$vo.pv_name}'>{$vo.pv_name}</option>
+          {/if}
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">车体颜色</label>
+    <div class="layui-input-inline">
+      <select name="color" id="color" lay-filter="color">
+          <option value="0">请选择</option>
+          {foreach $param as $vo}
+          {if $vo.pv_param_id == 7}
+          <option value='{$vo.pv_name}'>{$vo.pv_name}</option>
+          {/if}
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+    </div>
+  </div>  
+  <div class="layui-form-item">
+    <label class="layui-form-label">车辆用途</label>
+    <div class="layui-input-inline">
+      <select name="purpose" id="purpose" lay-filter="purpose">
+          <option value="0">请选择</option>
+          {foreach $param as $vo}
+          {if $vo.pv_param_id == 9}
+          <option value='{$vo.pv_name}'>{$vo.pv_name}</option>
+          {/if}
+          {/foreach}
+          <!-- 只展示一级分类，因为在添加时，不需要将分类添加为二级分类的子分类 -->
+        </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">亮点配置</label>
+    <div class="layui-input-block">
+      {foreach $brt as $v}
+      <input type="checkbox" name="brt[]" title="{$v.brt_name}" value="{$v.brt_name}">
+      {/foreach}
+    </div>
+  </div>
+  <div class="layui-form-item"><label style="padding-left:20px;color:red;">车辆照片(必填)</label></div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择图片</label>
+    <div class="layui-input-inline">
+     <button type="button" class="layui-btn" id="upload">
+      <i class="layui-icon">&#xe67c;</i>上传图片
+  </button>
+    <i class="nul"></i>
+    </div>
+    <div class="layui-form-mid layui-word-aux"></div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">图片预览</label>
+    <div class="layui-input-block imgbox">
+      {foreach name="$data.sr_img|json_decode" item="vo"}
+      <span class="box">
+          <img src="{$vo}" width="100px" height="100px">
+          <i class='layui-icon'> &#x1007;</i>
+          <input type='hidden' name='imgs[]' value="{$vo}">
+      </span>
+      {/foreach}
+    </div>
+  </div>
+   <div class="layui-form-item"><label style="padding-left:20px;color:red;">车主信息(必填)</label></div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">车主姓名</label>
+    <div class="layui-input-block">
+      <input type="text" name="user"  placeholder="请输入车主姓名" autocomplete="off" class="layui-input" value="{$data.sr_owname}">
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <label class="layui-form-label">车主电话</label>
+    <div class="layui-input-block">
+      <input type="text" name="phone" placeholder="请输入车主电话" autocomplete="off" class="layui-input" value="{$data.sr_phone}">
+    </div>
+  </div>   
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script type="text/javascript" src="/static/admin/js/jquery1.8.3.min.js"></script>
+  <script src="/static/admin/assets/layui.all.js"></script>
+  <script src="/static/admin/js/layerwin.js"></script>
+  <script src="/static/admin/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+  <script src="/static/admin/js/jquery.form.js"></script>
+<script>
+  layui.use('upload',function(){
+    var upload = layui.upload;
+    var layer = layui.layer;
+    upload.render({
+      elem:'#upload',
+      url:"{:url('admin/Carsource/sourceImg')}",
+      field:'img',
+      done:function(res,index,upload){
+        if(res.code == 1){
+          var str = "<span class='box'>";
+          str += "<img width='100px' height='100px' src='"+"/uploads/source/"+res.pathinfo+"'>";
+          str += "<i class='layui-icon'>&#x1007;</i>";
+          str += "<input type='hidden' name='imgs[]' value='"+"/uploads/source/"+res.pathinfo+"'>";
+          str += "</span>";
+          $(".imgbox").append(str);
+        }
+      }
+    })
+
+    //删除图片
+    $(".box i").live("click",function(){
+      //页面中，该图片消失
+      var imginfo = $(this).prev().attr('src');
+      var obj = $(this).parent();
+      //服务器中，相应的图片删除
+      $.ajax({
+        type:'get',
+        url:"{:url('admin/Carsource/srdelImg')}",
+        data:{imginfo:imginfo},
+        dataType:"json",
+        success:function(res){
+          if(res.code==1){
+            obj.remove();
+          }
+        }
+      })
+    })
+  })
+    layui.use(['form','layer'], function(){ 
+      var form = layui.form;
+      //封装查询函数
+
+      form.on('select(prov)', function(data){
+        // console.log(data.value); //得到被选中的值
+        $.post("{:url('admin/Carsource/selectarea')}","id="+data.value,function(res){
+        var data = eval("("+res+")");
+        var arr = "";
+        for(var j in data){
+          // console.log(date[data]);
+            arr+="<option value='"+data[j].area_id+"'>";
+            arr+=data[j].area_name;
+            arr+="</option>";    
+        }
+          $('#city').html(arr);
+          //重新渲染
+          form.render();
+      },false);
+      });
+    //封装查询函数
+      form.on('select(brand)', function(data){
+        // console.log(data.value); //得到被选中的值
+        $.post("{:url('admin/Carsource/select')}","id="+data.value,function(res){
+        var data = eval("("+res+")");
+        var arr = "";
+        for(var i in data){
+            arr+="<option value='"+data[i].series_id+"'>";
+            arr+=data[i].series_name;
+            arr+="</option>";
+          }  
+          $('#series').html(arr);
+          $('#type').html("");
+          //重新渲染
+          form.render();
+        },false);
+
+        // console.log(data.value); //得到被选中的值
+       /* $.post("{:url('admin/Carsource/select')}","next="+set.value,function(res){
+        var data = eval("("+res+")");
+        var arr = "";
+        for(var i in data){
+            arr+="<option value='"+data[i].ty_id+"'>";
+            arr+=data[i].ty_name;
+            arr+="</option>";
+          }  
+          $('#type').html(arr);
+          //重新渲染
+          form.render();
+        },false);*/
+
+      })
+      form.on('select(series)', function(data){
+        // console.log(data.value); //得到被选中的值
+        $.post("{:url('admin/Carsource/select')}","next="+data.value,function(res){
+        var data = eval("("+res+")");
+        var arr = "";
+        for(var i in data){
+            arr+="<option value='"+data[i].ty_id+"'>";
+            arr+=data[i].ty_name;
+            arr+="</option>";
+          }  
+          $('#type').html(arr);
+          //重新渲染
+          form.render();
+        },false);
+      })
+    })
+    //验证 用户名，密码，上传图不为空
+    $("#newsform").validate({
+      submitHandler:function(form){
+        var img = $(".imgbox").children("span").length;
+        if(img==""){
+          layer.tips("图片不能为空",".nul",{time:1500,
+            tips:[2,'#F13D3D']});
+          return false;
+        }
+        var content = $("input[name=title]").val();
+        if(content == ""){
+          layer.msg("请填写名称",{time:1500,
+            icon:2});
+          return false;
+        }
+        $(form).ajaxSubmit({
+          type:"post",
+          url:"{:url('admin/Carsource/sourceUpdate')}",
+          dataType:"json",
+          success:function(res){
+              if(res.code == 1){
+                layer.msg(res.msg,{icon:1,time:1500},function(){
+                    //关闭本窗口，刷新父级页面
+                      layer_close();
+                  })
+              }else{
+                layer.msg(res.msg,{icon:2,time:1500});
+              }
+          }
+        })
+      }
+    })
+</script>
+</body>
+</html>
